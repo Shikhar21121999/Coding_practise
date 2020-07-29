@@ -1,6 +1,6 @@
-// test 1
+// atcoder dp contest
+// I coins
 #include <bits/stdc++.h>
-#include<iostream>
  
 # define C continue;
 # define R return
@@ -52,11 +52,11 @@
  
 # define vvpii vector < vector < pii > >
 # define vpipii vector< pipii >
-
+ 
 # define F first
 # define S second
 # define mp make_pair
-
+ 
 # define unm unordered_map
 # define unmii unm< int , int >
 # define unmll unm< ll , ll >
@@ -68,12 +68,11 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
-# define loopj(r,n) for(int j=r;j<n;j++)
-# define loopm(s,m) for(int k=s;k<m;k++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
 # define space " "
+//vector<vector<int> > vec( n , vector<int> (m, 0));
 //YES
 //NO
 //cout
@@ -81,27 +80,41 @@
 //false
 //yes
 //no
-
+ 
 const ll mod9=1e9+7;
 const ll maxsize=2e9+1;
-const ll mod =998244353;
+// const ll mod =998244353;
 const ll mod2=1073741824;
-
 const ll INF=1e18L+5;
+const int two_pow_fiv=200008;
 using namespace std;
 
-string max_str_len(string a,string b){
-    if(a.length()>=b.length())return a;
-    return b;
-}
 
 int main()
 {
 ios::sync_with_stdio(0);
 cin.tie(0);
 #ifndef ONLINE_JUDGE
-	freopen("input.txt","r",stdin);
-	freopen("output.txt","w",stdout);
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
 #endif
-    
+    int n;
+    cin>>n;
+    vector <double> dp(n+5);
+    dp[0]=1;
+    for(int coin_num=1;coin_num<=n;coin_num++){
+    	double curr_probab;
+    	cin>>curr_probab;
+    	for(int i=n;i>=0;i--){
+    		dp[i]=(i==0 ? 0 : dp[i-1]*(curr_probab))+dp[i]*(1-curr_probab);
+    	}
+    }
+    // now we add all the probablities in cases where heads are greater than tails
+    double answer=0;
+    for(int heads=0;heads<=n;heads++){
+    	int tails=n-heads;
+    	if(heads>tails)answer+=dp[heads];
+    }
+     printf("%.10lf\n", answer);
+return 0;
 }

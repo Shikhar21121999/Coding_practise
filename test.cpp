@@ -1,4 +1,4 @@
-// https://codeforces.com/contest/1385/problem/C
+// empty
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -87,57 +87,12 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 using namespace std;
-int n,k;
-vi a;
+
 bool is_poss_ans(int p){
-    if(k%2){
-        // look if k/2 even elements can be selected for even posns
-        int evncnt=k/2;
-        for(int i=1;i<n;i++){
-            if(a[i]<=p){
-                evncnt--;
-                i++;
-            }
-        }
-        if(evncnt<=0)return true;
-        return false; 
-    }
-    else{
-        // look for k/2 elements that can be selected for any posns
-        int cnt=k/2;
-        for(int i=0;i<n;i++){
-            if(a[i]<=p){
-                cnt--;
-                i++;
-            }
-        }
-        if(cnt<=0)return true;
-        return false;
-    }
+
 }
 
 void solve (){
-    cin>>n>>k;
-    a.resize(n);
-    vi b(n);
-    loop(0,n){
-        cin>>a[i];
-        b[i]=a[i];
-    }
-    sort(all(b));
-    // apply binary search over b
-    int lo=0,hi=n,mid;
-    int poss_ans=0;
-    while(lo<=hi){
-       mid=(lo+hi)/2;
-        if(is_poss_ans(b[mid])){
-            poss_ans=b[mid];
-            hi=mid-1;
-        }
-        else lo=mid+1;
-    } 
-    cout<<poss_ans;
-
 
 }
  

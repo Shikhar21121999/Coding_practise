@@ -88,39 +88,7 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 using namespace std;
 
-string str1,str2;
-int n,m;
-string max_str_len(string a,string b){
-    if(a.length()>=b.length())return a;
-    return b;
-}
 
-
-string func (int s1,int s2,string prev_str){
-    cout<<s1<<space<<s2<<space<<prev_str<<nextline;
-    int n_s1,n_s2;
-    bool flag=false;
-    string n_str=prev_str;
-    // cout<<n_str<<nextline;
-    for(int i=s1;i<n;i++){
-        for(int j=s2;j<m;j++){
-            if(str1[i]==str2[j]){
-                n_s1=i+1;
-                n_s2=j+1;
-                n_str.push_back(str1[i]);
-                flag=true;
-                break;
-            }
-        }
-        if(flag)break;
-    }
-    cout<<prev_str<<space<<n_str<<nextline;
-    // base case
-    if(!flag) return prev_str;
-    return max_str_len(func(n_s1,n_s2,n_str),func(n_s1,s2,prev_str));
-    
-}
- 
 int main()
 {
 ios::sync_with_stdio(0);
@@ -129,9 +97,6 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cin>>str1>>str2;
-    n=str1.length();
-    m=str2.length();
-    cout<<func(0,0,"");
+    
 return 0;
 }
