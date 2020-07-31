@@ -88,7 +88,42 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 using namespace std;
 
+ll diff;
+pair <ll,ll> modified_rem(ll a,ll b){
+	ll c,rem1,rem2;
+	c=a/b;
+	rem1=a-b*c;
+	rem2=a-b*(c+1);
+	// rem2=abs(rem2);
+	if(abs(rem2)<= diff){
+		return make_pair(1,rem2);
+	}
+	if(rem1<= diff){
+		return make_pair(1,rem1);
+	}
+	return make_pair(0,7250);
+}
 
+void solve(){
+	ll l,r,m;
+    cin>>l>>r>>m;
+    diff=r-l;
+    pair <ll,ll> curr;
+    loop(l,r+1){
+    	curr=modified_rem(m,i);
+    	if(curr.first){
+    		if(curr.second<0){
+    			cout<<i<<space<<l<<space<<l+abs(curr.second)<<nextline;
+    			return;
+    		}
+    		else{
+    			cout<<i<<space<<l+curr.second<<space<<l<<nextline;
+    			return;
+    		}
+    	}
+    }
+    cout<<"error"<<nextline;
+}
 
 int main()
 {
@@ -99,15 +134,7 @@ cin.tie(0);
     freopen("output.txt","w",stdout);
 #endif
     test{
-    	ll l,r,m;
-    	cin>>l>>r>>m;
-    	if(m>=l){
-    		if(m<=r)cout<<m<<space<<l<<space<<l<<nextline;
-    		else cout<<r<<space<<l+m%r<<space<<l<<nextline;
-    	}
-    	else {
-    		cout<<l<<space<<l<<space<<2*l-m<<nextline;
-    	}
+    	solve();
     }
 return 0;
 }

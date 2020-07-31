@@ -1,4 +1,4 @@
-// empty
+// atcoder dp contest Knapsack 2
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -67,7 +67,6 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
-# define loop2(q,n) for(int j=q;j<n;j++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
@@ -87,30 +86,8 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
-
-void solve(){
-    int n,m;
-    cin>>n>>m;
-    int a[n+1],b[m+1];
-    loop(0,n)cin>>a[i];
-    loop(0,m)cin>>b[i];
-    bool flag=false;
-    int ans;
-    loop(0,n){
-        loop2(0,m){
-            if(a[i]==b[j]){
-                flag=true;
-                ans=a[i];
-                break;
-            }
-        }
-        if(flag)break;
-    }
-    if(flag)cout<<"YES"<<nextline<<1<<space<<ans<<nextline;
-    else cout<<"NO"<<nextline;
-}
-
 
 int main()
 {
@@ -120,8 +97,28 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
+    vector <int> dp(1e5,IINF);
+    int n,w;
+    cin>>n>>w;
+    cout<<n<<space<<w<<nextline;
+    loop(0,50)cout<<dp[i]<<space;
+    cout<<nextline;
+    loop(0,n){
+        int wt,value;
+        cin>>wt>>value;
+        cout<<wt<<space<<value<<nextline;
+        for(int j=value;j-value<=1e5;j++){
+            dp[j]=min(dp[j-value]+wt,dp[j]);
+        }
+    }
+    // Print the maximum possible sum of the values of items that Taro takes home.
+    // that is we want the dp[i] such that dp[i]<=wt
+    // iterate from back and print first value of dp such that dp[i]<=wt
+    for(int i=1e5;i>=0;i--){
+        if(dp[i]<=w){
+            cout<<dp[i]<<space<<i<<nextline;
+            break;
+        }
     }
 return 0;
 }

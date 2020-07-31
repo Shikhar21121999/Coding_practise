@@ -1,4 +1,4 @@
-// empty
+// B.Sequential nim
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -67,7 +67,6 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
-# define loop2(q,n) for(int j=q;j<n;j++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
@@ -89,26 +88,24 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 using namespace std;
 
+
 void solve(){
-    int n,m;
-    cin>>n>>m;
-    int a[n+1],b[m+1];
-    loop(0,n)cin>>a[i];
-    loop(0,m)cin>>b[i];
-    bool flag=false;
-    int ans;
-    loop(0,n){
-        loop2(0,m){
-            if(a[i]==b[j]){
-                flag=true;
-                ans=a[i];
-                break;
-            }
-        }
-        if(flag)break;
-    }
-    if(flag)cout<<"YES"<<nextline<<1<<space<<ans<<nextline;
-    else cout<<"NO"<<nextline;
+	int n;
+	cin>>n;
+	int a[n+1];
+	loop(0,n)cin>>a[i];
+	bool first_wins=true;
+	loop(0,n){
+		if(a[i]!=1){
+			break;
+		}
+		else if(i==n-1)break;
+		else if(a[i]==1){
+			first_wins=!first_wins;
+		}
+	}
+	if(first_wins)cout<<"First"<<nextline;
+	else cout<<"Second"<<nextline;
 }
 
 
@@ -121,7 +118,7 @@ cin.tie(0);
     freopen("output.txt","w",stdout);
 #endif
     test{
-        solve();
+    	solve();
     }
 return 0;
 }
