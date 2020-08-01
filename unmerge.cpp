@@ -1,4 +1,5 @@
-// atcoder dp contest Knapsack 2
+// Unmerge 
+// codeforces contest d
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,6 +90,56 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
+vector <int> sub_arr_len;
+int sub_arr_len_size;
+bool is_sub_sum(int ind, int reqd_ssum){
+    if(reqd_ssum==0)return true;
+    if(reqd_ssum<0)return false;
+    if(ind==sub_arr_len_size-1)return false;
+    return(is_sub_sum(ind+1,reqd_ssum-sub_arr_len[ind]) || is_sub_sum(ind+1,reqd_ssum));
+}
+
+void solve(){
+    // find the length of subarrays
+    sub_arr_len.clear();
+    // cout<<"start"<<nextline;
+    int n;
+    cin>>n;
+    vector <int> inp_permut(2*n);
+    vector <bool> passed(2*n+10,0);
+    loop(0,2*n)cin>>inp_permut[i];
+    int nxt_search_ele=2*n;
+    int curr_cnt=0;
+    // loop(0,2*n)cout<<inp_permut[i]<<space;
+    // cout<<nextline;
+    for(int i=2*n-1;i>=0;i--){
+        // cout<<i<<space<<curr_cnt<<nextline;
+        if(inp_permut[i]!=nxt_search_ele){
+            passed[inp_permut[i]]=true;
+            curr_cnt++;
+        }
+        else{
+            // cout<<nxt_search_ele<<space<<i<<space<<curr_cnt<<nextline;
+            passed[nxt_search_ele]=true;
+            sub_arr_len.push_back(curr_cnt+1);
+            curr_cnt=0;
+            while(passed[nxt_search_ele]){
+                nxt_search_ele--;
+            }
+        }
+
+    }
+    /*for(auto x:sub_arr_len){
+        cout<<x<<space;
+    }
+    cout<<nextline;*/
+    sub_arr_len_size=sub_arr_len.size();
+    if(is_sub_sum(0,n))cout<<"YES"<<nextline;
+    else cout<<"No"<<nextline;
+    return;
+    
+}
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -97,30 +148,8 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    vector <int> dp(1e5,IINF);
-    int n,w;
-    cin>>n>>w;
-    cout<<n<<space<<w<<nextline;
-    dp[0]=0;
-    loop(0,n){
-        int wt,value;
-        cin>>wt>>value;
-        for(int j=value;j-value<=110;j++){
-            dp[j]=min(dp[j-value]+wt,dp[j]);
-        }
-    }
-    // Print the maximum possible sum of the values of items that Taro takes home.
-    // that is we want the dp[i] such that dp[i]<=wt
-    // iterate from back and print first value of dp such that dp[i]<=wt
-    loop(0,50)cout<<i<<space<<dp[i]<<space;
-    cout<<nextline;
-
-
-    for(int i=110;i>=0;i--){
-        if(dp[i]<=w){
-            cout<<dp[i]<<space<<i<<nextline;
-            break;
-        }
+    test{
+        solve();
     }
 return 0;
 }

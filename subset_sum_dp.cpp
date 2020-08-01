@@ -1,4 +1,4 @@
-// atcoder dp contest Knapsack 2
+// dp subset sum problem
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -88,6 +88,23 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
+vector <int> a;
+int n;
+bool is_sub_sum(int ind, int reqd_ssum){
+    if(reqd_ssum==0)return true;
+    if(reqd_ssum<0)return false;
+    if(ind==n-1)return false;
+    return(is_sub_sum(ind+1,reqd_ssum-a[ind]) || is_sub_sum(ind+1,reqd_ssum));
+}
+
+
+void solve(){
+    int reqd_sum;
+    cin>>n>>reqd_sum;
+    a.resize(n);
+    loop(0,n)cin>>a[i];
+    cout<<is_sub_sum(0,reqd_sum);
+}
 
 int main()
 {
@@ -97,30 +114,8 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    vector <int> dp(1e5,IINF);
-    int n,w;
-    cin>>n>>w;
-    cout<<n<<space<<w<<nextline;
-    dp[0]=0;
-    loop(0,n){
-        int wt,value;
-        cin>>wt>>value;
-        for(int j=value;j-value<=110;j++){
-            dp[j]=min(dp[j-value]+wt,dp[j]);
-        }
-    }
-    // Print the maximum possible sum of the values of items that Taro takes home.
-    // that is we want the dp[i] such that dp[i]<=wt
-    // iterate from back and print first value of dp such that dp[i]<=wt
-    loop(0,50)cout<<i<<space<<dp[i]<<space;
-    cout<<nextline;
-
-
-    for(int i=110;i>=0;i--){
-        if(dp[i]<=w){
-            cout<<dp[i]<<space<<i<<nextline;
-            break;
-        }
+    test{
+        solve();
     }
 return 0;
 }
