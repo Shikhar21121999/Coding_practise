@@ -1,5 +1,5 @@
-// Unmerge 
-// codeforces contest d
+// dp subset sum problem
+// o(n*m) complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,17 +89,9 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
-
-vector <int> sub_arr_len;
-int sub_arr_len_size;
-/*bool is_sub_sum(int ind, int reqd_ssum){
-    if(reqd_ssum==0)return true;
-    if(reqd_ssum<0)return false;
-    if(ind==sub_arr_len_size-1)return false;
-    return(is_sub_sum(ind+1,reqd_ssum-sub_arr_len[ind]) || is_sub_sum(ind+1,reqd_ssum));
-}*/
+vector <int> a;
+int n;
 bool is_sub_sum(int reqd_ssum){
-    int n=sub_arr_len_size;
     vector <vector <int>> dp(n+1,vector <int> (reqd_ssum+1,0));
     // traverse the array
     // dp[i][j] dentotes wether there exist a subset of a(0,1,2...i) such that its sum is equal to j
@@ -112,53 +104,28 @@ bool is_sub_sum(int reqd_ssum){
 
     for(int i=1;i<=n;i++){
         for(int j=1;j<=reqd_ssum;j++){
-            if(sub_arr_len[i-1]>j)dp[i][j]=dp[i-1][j];
+            if(a[i-1]>j)dp[i][j]=dp[i-1][j];
             else{
-                dp[i][j]=dp[i-1][j] or dp[i-1][j-sub_arr_len[i-1]];
+                dp[i][j]=dp[i-1][j] or dp[i-1][j-a[i-1]];
             }
         }
+    }
+    for(auto row:dp){
+        for(auto value:row){
+            cout<<value<<space;
+        }
+        cout<<nextline;
     }
     return dp[n][reqd_ssum];
 }
-void solve(){
-    // find the length of subarrays
-    sub_arr_len.clear();
-    // cout<<"start"<<nextline;
-    int n;
-    cin>>n;
-    vector <int> inp_permut(2*n);
-    vector <bool> passed(2*n+10,0);
-    loop(0,2*n)cin>>inp_permut[i];
-    int nxt_search_ele=2*n;
-    int curr_cnt=0;
-    // loop(0,2*n)cout<<inp_permut[i]<<space;
-    // cout<<nextline;
-    for(int i=2*n-1;i>=0;i--){
-        // cout<<i<<space<<curr_cnt<<nextline;
-        if(inp_permut[i]!=nxt_search_ele){
-            passed[inp_permut[i]]=true;
-            curr_cnt++;
-        }
-        else{
-            // cout<<nxt_search_ele<<space<<i<<space<<curr_cnt<<nextline;
-            passed[nxt_search_ele]=true;
-            sub_arr_len.push_back(curr_cnt+1);
-            curr_cnt=0;
-            while(passed[nxt_search_ele]){
-                nxt_search_ele--;
-            }
-        }
 
-    }
-    /*for(auto x:sub_arr_len){
-        cout<<x<<space;
-    }
-    cout<<nextline;*/
-    sub_arr_len_size=sub_arr_len.size();
-    if(is_sub_sum(n))cout<<"YES"<<nextline;
-    else cout<<"No"<<nextline;
-    return;
-    
+
+void solve(){
+    int reqd_sum;
+    cin>>n>>reqd_sum;
+    a.resize(n);
+    loop(0,n)cin>>a[i];
+    cout<<is_sub_sum(reqd_sum);
 }
 
 int main()

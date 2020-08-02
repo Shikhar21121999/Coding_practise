@@ -1,4 +1,6 @@
 // dp subset sum problem
+// recursion solution
+// expenonetial complexity
 #include <bits/stdc++.h>
  
 # define C continue;
