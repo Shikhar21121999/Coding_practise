@@ -1,6 +1,2 @@
-YES
-No
-YES
-YES
-No
-No
+5
+4578

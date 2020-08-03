@@ -1,4 +1,6 @@
-// empty
+// longest increasing sub_sequence problem
+// intterative,bottom up approach
+// complexity o(n^2)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,13 +88,22 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
-int test_1(int a){
-    if(a==4)return a=3;
-    return -1;
+int n;
+vector <int> a;
+vector <int> dp;
+// dp[i] stores max length of increasing sub-sequence possible in the range from [0,i]
+// that is a[i] is part of dp[i]
+
+/*template <typename T>void max_self(T& a,T b){
+    a=max(a,b);
+}*/
+template <typename T> void max_self(T& a,T b){
+    a=max(a,b);
 }
- 
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -101,6 +112,27 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cout<<test_1(6);
-return 0;
+    cin>>n;
+    a.resize(n+2,-1);
+    dp.resize(n+2,0);
+    int input;
+    // input array is indexed from 1
+    loop(1,n+1)cin>>a[i];
+    dp[0]=0;
+    loop(1,n+1){
+        int max_till_now=0;
+        for(int j=0;j<i;j++){
+            // find the max sub-array
+            if(a[i]>=a[j])max_till_now=max(max_till_now,dp[j]);
+            //max_self(max_till_now,dp[j]);
+        }
+        dp[i]=max_till_now+1;
+    }
+    // we find the max value using iteration
+    int ans=0;
+    loop(0,n+2){
+        max_self(ans,dp[i]);
+    }
+    cout<<ans<<nextline
+;return 0;
 }

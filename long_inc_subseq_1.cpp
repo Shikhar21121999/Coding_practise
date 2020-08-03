@@ -1,4 +1,6 @@
-// empty
+// longest increasing sub_sequence problem
+// intterative,bottom up approach
+// complexity o(n^2)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,13 +88,22 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
-int test_1(int a){
-    if(a==4)return a=3;
-    return -1;
+int n;
+vector <int> a;
+vector <pair <int,int>> dp;
+// dp[i] stores max length of increasing sub-sequence possible uptill i if we include a[i] in the sequence
+
+int max_ind_dp(int a,int b){
+    if(dp[a].first>=dp[b].first)return a;
+    return b;
 }
- 
+template <typename T> void max_self(T& a,T b){
+    a=max(a,b);
+}
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -101,6 +112,42 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cout<<test_1(6);
+    cin>>n;
+    a.resize(n+2,-1);
+    dp.resize(n+2,{0,-2});
+    int input;
+    // input array is indexed from 1
+    loop(1,n+1)cin>>a[i];
+    a[n+1]=IINF;
+    loop(1,n+2){
+        int max_till_now_index=0;
+        for(int j=0;j<i;j++){
+            // find the index of the max sub-array dp
+            if(a[i]>=a[j])max_till_now_index=max_ind_dp(max_till_now_index,j);
+            //max_self(max_till_now,dp[j]);
+        }
+        dp[i]=make_pair(dp[max_till_now_index].first+1,max_till_now_index);
+    }
+    // it is to be noted that dp[i] denotes max length of subsequence possible
+    // if elements till i are taken that is a[i] is inclusive
+
+    // now we need to find the max_subseq possible
+    // therefore we find the max value of dp[i]
+    // that is in the form of a pair then we backtrack it to get the solution
+    pair <int,int> an_in;
+    loop(0,n+2){
+        max_self(an_in,dp[i]);
+    }
+    // length of longest sequence
+    cout<<an_in.first<<nextline;
+    // now we back_track to construct the solution
+    string ans="";
+    while(an_in.second>0){
+        ans+=to_string(a[an_in.second]);
+        an_in=dp[an_in.second];
+    }
+    reverse(ans.begin(),ans.end());
+    // required sequence
+    cout<<ans<<nextline;
 return 0;
 }

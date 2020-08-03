@@ -1,4 +1,5 @@
-// empty
+// dp shortest supersequence problem printing string
+// complexity is O(m*n)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,13 +87,37 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
-int test_1(int a){
-    if(a==4)return a=3;
-    return -1;
+string a,b;
+int n,m;
+vector<vector <string>> dp(100,vector<string> (100,"-2"));
+
+string min_len_str(string s,string d){
+    if(s.length()<=d.length())return s;
+    return d;
 }
- 
+
+
+
+string SCS(int p,int q){
+    // cout<<p<<space<<q<<space<<dp[p][q]<<nextline;
+    if(dp[p][q]!="-2")return dp[p][q];
+    if(p==0)return dp[p][q]=b.substr(0,q);
+    else if(q==0)return dp[p][q]=a.substr(0,p);
+    else{
+        if(a[p-1]==b[q-1]){
+            return dp[p][q]=SCS(p-1,q-1)+a[p-1];
+        }
+        else{
+            // first we find min length of the two
+            // if dp[p-1][q] is smaller
+            return dp[p][q]=min_len_str(SCS(p-1,q)+a[p-1],SCS(p,q-1)+b[q-1]);
+        }
+    }
+}
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -101,6 +126,23 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cout<<test_1(6);
+    cin>>a>>b;
+    // cout<<a<<nextline<<b<<nextline;
+    /*int c,v;
+    cin>>c>>v;
+    cout<<c<<space<<v<<nextline;*/
+    n=a.length();
+    m=b.length();
+    string ans;
+    ans=SCS(n,m);
+    cout<<ans<<nextline;
+    for(int i=0;i<=n;i++){
+        for(int j=0;j<=m;j++){
+            cout<<dp[i][j]<<space;
+        }
+        cout<<nextline;
+    }
+
+
 return 0;
 }
