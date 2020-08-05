@@ -1,6 +1,5 @@
-// longest increasing sub_sequence problem
-// intterative,bottom up approach
-// complexity o(n^2)
+// atcoder dp contest Knapsack 1
+// standard dp knapsack
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -91,30 +90,10 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
-string a,b;
-int n,m;
-
-int mod_min(int a,int b,int c){
-    a=min(a,b);
-    return min(a,c);
+void max_self(ll& a,ll b){
+    a=max(a,b);
 }
 
-vector <vector<int>> dp;
-
-int rec(int i,int j){
-    if(dp[i][j]!=-1)return dp[i][j];
-    // base case
-    if(i>=n){
-        return dp[i][j]=m-j;
-    }
-    if(j>=m){
-        return dp[i][j]=n-i;
-    }
-    if(a[i]!=b[j]){
-        return dp[i][j]=mod_min(rec(i,j+1)+1,rec(i+1,j+1)+1,rec(i+1,j)+1);
-    }
-    if(a[i]==b[j])return dp[i][j]=rec(i+1,j+1);
-}
 
 int main()
 {
@@ -124,16 +103,25 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cin>>a>>b;
-    n=a.length();
-    m=b.length();
-    dp.resize(n+1,vector<int> (m+1,-1));
-    cout<<rec(0,0)<<nextline;
-    /*for(auto rows:dp){
-        for(auto values:rows){
-            cout<<values<<space;
+    int n,w;
+    cin>>n>>w;
+    vector <ll> dp(w+1,0);
+    // dp[i] denotes the max_value that can be acquired for wieght i
+    ll wt,value;
+    loop(0,n){
+        cin>>wt>>value;
+        // this wieght and value can be used to update value of max wieght of W-wt
+        // as we are not allowed to have multiple items of same type hence we iterate backwards in wieght
+        // in short if we keep forward iteration dp[0] ->dp[3] ->dp[6] hence for wt 3 dp[6]=dp[3+3],dp[3]+value_3
+        // hence it leads to taking multiple items of same type
+        for(int wt_already=w-wt;wt_already>=0;wt_already--){
+            max_self(dp[wt_already+wt],dp[wt_already]+value);
         }
-        cout<<nextline;
-    }*/
-         
+    }
+    ll ans=0;
+    loop(0,w+1){
+        max_self(ans,dp[i]);
+    }
+    cout<<ans<<nextline;
+return 0;
 }

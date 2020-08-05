@@ -89,6 +89,23 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
+/*
+1<=N<=100
+1<=W<=1^9
+1<=vi<=10^3
+*/
+// as we see constraints of wieghts are quiete high and complexity of knapsack is o(n*w)
+// therefore we make a dp of values rather than of wieghts
+
+void max_self(int& a,int b){
+    a=max(a,b);
+}
+
+void min_self(ll& a,ll b){
+    a=min(a,b);
+}
+
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -97,30 +114,36 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    vector <int> dp(1e5,IINF);
     int n,w;
     cin>>n>>w;
-    cout<<n<<space<<w<<nextline;
+    vi wieght(n),value(n);
+    loop(0,n)cin>>wieght[i]>>value[i];
+    // we find the sum_value which is in turn max value achieved by adding wieghts of some items
+    ll sum_value=0;
+    for(auto x:value){
+        sum_value+=x;
+    }
+    // we make a dp of values
+    // in which dp[i] represent min wieght of items that can produce such values
+    // initialize with inf
+    vll dp(sum_value+1,INF);
+    // now we populate the dp
     dp[0]=0;
-    loop(0,n){
-        int wt,value;
-        cin>>wt>>value;
-        for(int j=value;j-value<=110;j++){
-            dp[j]=min(dp[j-value]+wt,dp[j]);
+    for(int i=0;i<n;i++){
+        for(int value_already=sum_value-value[i];value_already>=0;value_already--){
+            min_self(dp[value_already+value[i]],dp[value_already]+wieght[i]);
         }
     }
-    // Print the maximum possible sum of the values of items that Taro takes home.
-    // that is we want the dp[i] such that dp[i]<=wt
-    // iterate from back and print first value of dp such that dp[i]<=wt
-    loop(0,50)cout<<i<<space<<dp[i]<<space;
-    cout<<nextline;
-
-
-    for(int i=110;i>=0;i--){
+    // now we find i for which dp[i] that is wieght is less than or equal to required wieght
+    int ans=0;
+    for(int i=0;i<sum_value+1;i++){
+        // cout<<i<<space<<dp[i]<<nextline;
         if(dp[i]<=w){
-            cout<<dp[i]<<space<<i<<nextline;
-            break;
+            max_self(ans,(ll)i);
         }
     }
+    cout<<ans<<nextline;
+
+
 return 0;
 }
