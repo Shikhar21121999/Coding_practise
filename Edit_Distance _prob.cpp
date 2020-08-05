@@ -129,6 +129,7 @@ cin.tie(0);
     m=b.length();
     dp.resize(n+1,vector<int> (m+1,-1));
     cout<<rec(0,0)<<nextline;
+    // when we get different cost of 
     /*for(auto rows:dp){
         for(auto values:rows){
             cout<<values<<space;
