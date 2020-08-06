@@ -1,5 +1,5 @@
-// dp subset sum problem
-// o(n*m) complexity
+// standard dp 
+// rod cutting problem dp
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,43 +89,9 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
-vector <int> a;
-int n;
-bool is_sub_sum(int reqd_ssum){
-    vector <vector <int>> dp(n+1,vector <int> (reqd_ssum+1,0));
-    // traverse the array
-    // dp[i][j] dentotes wether there exist a subset of a(0,1,2...i) such that its sum is equal to j
-    // there will always be a subset of a such that its sum is 0 that is for every i dp[i][0]=false or 0
 
-    for(int i=0;i<=n;i++){
-        dp[i][0]=1;
-    }
-    //rest are kept false
-
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=reqd_ssum;j++){
-            if(a[i-1]>j)dp[i][j]=dp[i-1][j];
-            else{
-                dp[i][j]=dp[i-1][j] or dp[i-1][j-a[i-1]];
-            }
-        }
-    }
-    for(auto row:dp){
-        for(auto value:row){
-            cout<<value<<space;
-        }
-        cout<<nextline;
-    }
-    return dp[n][reqd_ssum];
-}
-
-
-void solve(){
-    int reqd_sum;
-    cin>>n>>reqd_sum;
-    a.resize(n);
-    loop(0,n)cin>>a[i];
-    cout<<is_sub_sum(reqd_sum);
+void max_self(int& a,int b){
+    a=max(a,b);
 }
 
 int main()
@@ -136,8 +102,22 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
+    // input format
+    // n is the required length of log
+    // array prices stores the price of cutting the log of lenth l
+    int n;
+    cin>>n;
+    vi prices(n+1);
+    loop(1,n+1)cin>>prices[i];
+    // we create a dp of length n+1
+    vi dp(n+2,0);
+    // dp[i] stores the max_attainable profit to cut the log of length i0
+    // we can clearly say that a piece of log can be cut into many pieces of same length
+    loop(1,n+1){
+        for(int length_already=0;length_already<=n-i;length_already++){
+            max_self(dp[length_already+i],dp[length_already]+prices[i]);
+        }
     }
+    cout<<dp[n];
 return 0;
 }

@@ -1,5 +1,8 @@
-// dp subset sum problem
-// o(n*m) complexity
+// standard dp matrix chain multiplication using dp
+// prints the min. number of operations that are required to multiply a chain of matrices
+// input is in the form of a vector
+// element in the array are in the form that three elements in the array denote two matrices 
+// o(n^3) complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,44 +92,38 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
-vector <int> a;
-int n;
-bool is_sub_sum(int reqd_ssum){
-    vector <vector <int>> dp(n+1,vector <int> (reqd_ssum+1,0));
-    // traverse the array
-    // dp[i][j] dentotes wether there exist a subset of a(0,1,2...i) such that its sum is equal to j
-    // there will always be a subset of a such that its sum is 0 that is for every i dp[i][0]=false or 0
+// first without dp using just recursion
+// we need to construct a dp grid (dp[i][j]) that stores the min cost for a subsequence from i to j
 
-    for(int i=0;i<=n;i++){
-        dp[i][0]=1;
-    }
-    //rest are kept false
+vi a;
+vector <vector <int> > dp;
 
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=reqd_ssum;j++){
-            if(a[i-1]>j)dp[i][j]=dp[i-1][j];
-            else{
-                dp[i][j]=dp[i-1][j] or dp[i-1][j-a[i-1]];
-            }
-        }
+int min_op_multiplication(int i,int j){
+    // denoting beginning and ending of the the subsequence of array
+    // now base case that is if in the sequenc there is only one matrix
+    if(dp[i][j]!=-2)return dp[i][j];
+    if(j<=i+1){
+        return dp[i][j]=0;
     }
-    for(auto row:dp){
-        for(auto value:row){
-            cout<<value<<space;
-        }
-        cout<<nextline;
+    // else we need to break the current subsequence into all possible subsequences
+    int min_all=IINF;
+    for(int k=i+1;k<=j-1;k++){
+        // here k gives us a division or split between current subsequence
+        // now we have two subsequences from i to k and one from k to j
+        // cost is the sum of multiplication in subsequences 1+sum of multiplication in subsequence 2
+        // and cost of multiplying overall matrix formed from subsequence 1 and subsequence 2 
+        int cost=min_op_multiplication(i,k); // first subsequence
+        cost+=min_op_multiplication(k,j);   // first subsequence
+        cost+=a[i]*a[k]*a[j];
+
+        // we need minimum of all
+        min_all=min(min_all,cost);
     }
-    return dp[n][reqd_ssum];
+    return dp[i][j]=min_all;
+
 }
 
 
-void solve(){
-    int reqd_sum;
-    cin>>n>>reqd_sum;
-    a.resize(n);
-    loop(0,n)cin>>a[i];
-    cout<<is_sub_sum(reqd_sum);
-}
 
 int main()
 {
@@ -136,8 +133,14 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
-    }
+    // input the sequence of length of n
+    int n;
+    cin>>n;
+    a.resize(n+1);
+    dp.resize(n+1,vector<int> (n+1,-2));
+    loop(0,n)cin>>a[i];
+    //we call the function over the complete sequence
+    // loop(0,n)cout<<a[i];
+    cout<<min_op_multiplication(0,n-1);
 return 0;
 }

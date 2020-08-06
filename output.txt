@@ -1,1 +1,16 @@
-90
+Comparing string: samsungandmangok
+ 1
+cream 1
+like 1
+icecream 1
+ice 1
+i 1
+mobile 1
+sung 1
+samsung 1
+go 1
+mango 1
+sam 1
+man 1
+and 1
+Yes

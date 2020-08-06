@@ -1,5 +1,5 @@
-// dp subset sum problem
-// o(n*m) complexity
+// standard dp problem
+// word-break-problem recursion
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,43 +89,21 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
-vector <int> a;
+
+unordered_map<string,bool> dict;
 int n;
-bool is_sub_sum(int reqd_ssum){
-    vector <vector <int>> dp(n+1,vector <int> (reqd_ssum+1,0));
-    // traverse the array
-    // dp[i][j] dentotes wether there exist a subset of a(0,1,2...i) such that its sum is equal to j
-    // there will always be a subset of a such that its sum is 0 that is for every i dp[i][0]=false or 0
-
-    for(int i=0;i<=n;i++){
-        dp[i][0]=1;
+bool recur(string a){
+    // base case
+    if(dict[a])return true;
+    // else we see for every possible split
+    // if the resulting words are part of dictionary
+    for(int i=1;i<a.length();i++){
+        bool p,q;
+        p=recur(a.substr(0,i));
+        q=recur(a.substr(i,n-i));
+        if(p and q)return true;
     }
-    //rest are kept false
-
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=reqd_ssum;j++){
-            if(a[i-1]>j)dp[i][j]=dp[i-1][j];
-            else{
-                dp[i][j]=dp[i-1][j] or dp[i-1][j-a[i-1]];
-            }
-        }
-    }
-    for(auto row:dp){
-        for(auto value:row){
-            cout<<value<<space;
-        }
-        cout<<nextline;
-    }
-    return dp[n][reqd_ssum];
-}
-
-
-void solve(){
-    int reqd_sum;
-    cin>>n>>reqd_sum;
-    a.resize(n);
-    loop(0,n)cin>>a[i];
-    cout<<is_sub_sum(reqd_sum);
+    return false;
 }
 
 int main()
@@ -136,8 +114,28 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
+    // input format
+    // first line is an integer n denoting the number of strings in dictionary
+    // next n lines are strings to be present in the dictionary
+    // last line contains string s : the string to see if it can be broken into words that are present in dictionary
+    cin>>n;
+    string inp;
+    loop(0,n){
+        cin>>inp;
+        dict[inp]=true;
     }
+    dict[""]=true;
+    string s;
+    cin>>s;
+    cout<<"Comparing string: "<<s<<nextline;
+    for(auto x:dict){
+        cout<<x.first<<space<<x.second<<nextline;
+    }
+    if(recur(s))cout<<"Yes";
+    else cout<<"NO";
+
+
+
+
 return 0;
 }
