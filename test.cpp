@@ -88,11 +88,7 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 using namespace std;
 
-int test_1(int a){
-    if(a==4)return a=3;
-    return -1;
-}
- 
+// does an element get added to the map if we try to acess
 int main()
 {
 ios::sync_with_stdio(0);
@@ -101,6 +97,7 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    cout<<test_1(6);
+    string  s="";
+    cout<<s.length()<<nextline;
 return 0;
 }

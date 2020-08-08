@@ -1,15 +1,2 @@
-13
-mobile
-samsung
-icecream
-sam
-sung
-mango
-man
-and
-go
-i
-like
-ice
-cream
-samsungandmangok
+ABABC
+BABCA

@@ -1,5 +1,5 @@
 // standard dp problem
-// word-break-problem recursion
+// word-break-problem dp iterative bottom up
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -90,23 +90,8 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
-unordered_map<string,bool> dict;
-int n;
-int cnt=0;
-bool recur(string a){
-    // base case
-    if(dict[a])return true;
-    // else we see for every possible split
-    // if the resulting words are part of dictionary
-    cnt++;
-    for(int i=1;i<a.length();i++){
-        bool p,q;
-        p=recur(a.substr(0,i));
-        q=recur(a.substr(i,a.length()-i));
-        if(p and q)return true;
-    }
-    return false;
-}
+unordered_map<string,int> dict;
+vector <vector <int>> dp;
 
 int main()
 {
@@ -120,23 +105,65 @@ cin.tie(0);
     // first line is an integer n denoting the number of strings in dictionary
     // next n lines are strings to be present in the dictionary
     // last line contains string s : the string to see if it can be broken into words that are present in dictionary
-    cin>>n;
+    
+    int n_words;
+    int n;
+    cin>>n_words;
     string inp;
-    loop(0,n){
+    loop(0,n_words){
         cin>>inp;
-        dict[inp]=true;
+        dict[inp]=1;
     }
-    dict[""]=true;
+    dict[""]=1;
     string s;
     cin>>s;
-    cout<<"Comparing string: "<<s<<nextline;
-    if(recur(s))cout<<"Yes";
-    else cout<<"NO";
-    cout<<nextline;
-    for(auto x:dict){
-        cout<<x.first<<space<<x.second<<nextline;
+    n=s.length();
+    if(n==0){
+        cout<<"Yes"<<nextline;
+        return 0;
     }
-    cout<<cnt;
+    dp.resize(n+1,vector<int> (n+1,-2));
+    // dp[i][j] represent wether the substring from i to j (both inclusive) 
+    // can be broken as words of the dictionary
+
+    // we iteratively see if dp[i][j] can be broken into words of dictionary
+
+    for(int len=1;len<=n;len++){
+        for(int fir_ind=0;fir_ind<n;fir_ind++){
+            // now we have the substring starting from fir_ind of length len
+            // hence substring begins from fir_ind and ends at sec_ind
+            int sec_ind=fir_ind+len-1;
+            if(sec_ind<n){
+                // here we get the substring from fir_ind to last_ind(sec_ind) both incl
+                s.substr(fir_ind,len);
+                // we check if present in the dictionary
+                dp[fir_ind][sec_ind]=dict[s.substr(fir_ind,len)];
+                // now if the substring is a single character it cannot be further broken down therefore dp[fir_ind][fir_ind+len-1] remains same
+                // in other cases(length>1) if dp[fir_ind][sec_ind] is false
+                // so we split the substring at all possible indexes and see if resulting words are in dictionary
+                if(!dp[fir_ind][sec_ind] and fir_ind!=sec_ind){
+                    // we check for all possible split words if they are part of dictionary
+                    for(int k=fir_ind;k<sec_ind;k++){
+                        // we split the current substrin into two substring and check if the two substrings are part of dict
+                        // length of first substr 
+                        dp[fir_ind][sec_ind]=dp[fir_ind][k] and dp[k+1][sec_ind];
+                        if(dp[fir_ind][sec_ind])break;
+                    }
+                }
+
+            }
+        }
+    }  
+    // now we see if the dp[0][n-1] is true or not
+    /*for(auto rows:dp){
+        for(auto value:rows){
+            cout<<value<<space;
+        }
+        cout<<nextline;
+    }*/
+    if(dp[0][n-1])cout<<"Yes"<<nextline;
+    else cout<<"No"<<nextline;
+
 
 
 

@@ -1,5 +1,6 @@
-// standard dp problem
-// word-break-problem recursion
+// standard dp
+// longest common substring string
+// we print the string
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -87,27 +88,13 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
-unordered_map<string,bool> dict;
-int n;
-int cnt=0;
-bool recur(string a){
-    // base case
-    if(dict[a])return true;
-    // else we see for every possible split
-    // if the resulting words are part of dictionary
-    cnt++;
-    for(int i=1;i<a.length();i++){
-        bool p,q;
-        p=recur(a.substr(0,i));
-        q=recur(a.substr(i,a.length()-i));
-        if(p and q)return true;
-    }
-    return false;
+void max_self(int& a,int b){
+    a=max(a,b);
 }
 
+ 
 int main()
 {
 ios::sync_with_stdio(0);
@@ -116,29 +103,44 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    // input format
-    // first line is an integer n denoting the number of strings in dictionary
-    // next n lines are strings to be present in the dictionary
-    // last line contains string s : the string to see if it can be broken into words that are present in dictionary
-    cin>>n;
-    string inp;
-    loop(0,n){
-        cin>>inp;
-        dict[inp]=true;
+    // for printing the characters all we need to do is get the index of final character that is common in both
+    // then we iteratively go back digonally till the characters are same or untill we reach a[i-1]!=b[j-1];
+
+    string a,b;
+    cin>>a>>b;
+    vvi dp(a.length()+1,vi (b.length()+1,0));
+    for(int i=0;i<a.length();i++){
+        for(int j=0;j<b.length();j++){
+            if(a[i]==b[j]){
+                max_self(dp[i+1][j+1],dp[i][j]+1);
+            }
+            /*max_self(dp[i+1][j],dp[i][j]);
+            max_self(dp[i][j+1],dp[i][j]);*/
+        }
     }
-    dict[""]=true;
-    string s;
-    cin>>s;
-    cout<<"Comparing string: "<<s<<nextline;
-    if(recur(s))cout<<"Yes";
-    else cout<<"NO";
-    cout<<nextline;
-    for(auto x:dict){
-        cout<<x.first<<space<<x.second<<nextline;
+    int ans=0,an_i,an_j;
+    // answer is the max value in the array
+    // we store the index which corrospond to the max_length
+    for(int i=0;i<=a.length();i++){
+        for(int j=0;j<=b.length();j++){
+            if(ans<=dp[i][j]){
+                ans=dp[i][j];
+                an_i=i;
+                an_j=j;
+            }
+        }
     }
-    cout<<cnt;
-
-
-
+    cout<<ans<<nextline;
+    cout<<dp[an_i][an_j]<<nextline;
+    // we collect the string by backtracking that is going back along the diagonal as long as characters are same
+    string an_s="";
+    while(a[an_i-1]==b[an_j-1]){
+        an_s+=a[an_i-1];
+        an_i--;
+        an_j--;
+    }
+    // reverse the string to get the ans
+    reverse(an_s.begin(),an_s.end());
+    cout<<an_s<<nextline;
 return 0;
 }

@@ -1,5 +1,4 @@
-// standard dp problem
-// word-break-problem recursion
+// longest common substring length
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -87,27 +86,13 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
-unordered_map<string,bool> dict;
-int n;
-int cnt=0;
-bool recur(string a){
-    // base case
-    if(dict[a])return true;
-    // else we see for every possible split
-    // if the resulting words are part of dictionary
-    cnt++;
-    for(int i=1;i<a.length();i++){
-        bool p,q;
-        p=recur(a.substr(0,i));
-        q=recur(a.substr(i,a.length()-i));
-        if(p and q)return true;
-    }
-    return false;
+void max_self(int& a,int b){
+    a=max(a,b);
 }
 
+ 
 int main()
 {
 ios::sync_with_stdio(0);
@@ -116,29 +101,27 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    // input format
-    // first line is an integer n denoting the number of strings in dictionary
-    // next n lines are strings to be present in the dictionary
-    // last line contains string s : the string to see if it can be broken into words that are present in dictionary
-    cin>>n;
-    string inp;
-    loop(0,n){
-        cin>>inp;
-        dict[inp]=true;
+    string a,b;
+    cin>>a>>b;
+    vvi dp(a.length()+1,vi (b.length()+1,0));
+    for(int i=0;i<a.length();i++){
+        for(int j=0;j<b.length();j++){
+            if(a[i]==b[j]){
+                max_self(dp[i+1][j+1],dp[i][j]+1);
+            }
+            /*max_self(dp[i+1][j],dp[i][j]);
+            max_self(dp[i][j+1],dp[i][j]);*/
+        }
     }
-    dict[""]=true;
-    string s;
-    cin>>s;
-    cout<<"Comparing string: "<<s<<nextline;
-    if(recur(s))cout<<"Yes";
-    else cout<<"NO";
-    cout<<nextline;
-    for(auto x:dict){
-        cout<<x.first<<space<<x.second<<nextline;
+    int ans=0;
+    // answer is the max value in the array
+    for(auto row:dp){
+        for(auto values:row){
+            cout<<values<<space;
+            max_self(ans,values);
+        }
+        cout<<nextline;
     }
-    cout<<cnt;
-
-
-
+    cout<<ans<<nextline;
 return 0;
 }
