@@ -154,9 +154,9 @@ cin.tie(0);
     for(int i=1;i<=n;i++){
         for(int j=1;j<=m;j++){
             cin>>a[i][j];
-            cout<<a[i][j]<<space;
+            // cout<<a[i][j]<<space;
         }
-        cout<<nextline;
+        // cout<<nextline;
     }
 
     // fill in the top down manner using recursion
@@ -169,21 +169,37 @@ cin.tie(0);
         }
     }
     // printing the dp
-    for(int i=1;i<=n;i++){
+    /*for(int i=1;i<=n;i++){
         for(int j=1;j<=n;j++){
             cout<<"{"<<dp[i][j].first<<","<<dp[i][j].second<<"}"<<space;
         }
         cout<<nextline;
-    }
+    }*/
     // now all we need to do is finding the index for which max_dp occurs
     // then we can simply back track to get the required sequence
-    pair <int ,int > ans_ind=make_pair(0,0);
+    int ans_i=0;
+    int ans_j=0;
     for(int i=1;i<=n;i++){
         for(int j=1;j<=n;j++){
-            if(dp[i][j]>=dp[ans_ind.F][ans_ind.S])ans_ind=make_pair(i,j);
+            if(dp[i][j].first>=dp[ans_i][ans_j].first){
+                ans_i=i;
+                ans_j=j;
+            }
         }
     }
-    cout<<ans_ind.first<<space<<ans_ind.second<<nextline;
+    // cout<<ans_ind.first<<space<<ans_ind.second<<nextline;
+
+    // we know the length of the sequence
+    // we also know where the sequence starts and thus we can find the value a[ans_inf.F][ans_ind.S]
+    // we know for a fact that the numbers are in inc oreder and each element differs by one
+    // length of the sequence is dp[ans_ind.first][ans_ind.second]
+    int star_val=a[ans_i][ans_j];
+    cout<<star_val<<space;
+    star_val++;
+    for(int i=0;i<dp[ans_i][ans_j].first;i++){
+        cout<<star_val<<space;
+        star_val++;
+    }
 
     
 
