@@ -1,4 +1,6 @@
-// empty
+// standard dp 
+// subset set problem 
+// codeforces contest d
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,16 +88,11 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
-void print_string(string a){
-	if(a.back()=='1')cout<<"possible"<<nextline;
-	cout<<a.length()<<nextline;
-	cout<<a<<nextline;
-}
 
 
-// does an element get added to the map if we try to acess
 int main()
 {
 ios::sync_with_stdio(0);
@@ -104,9 +101,46 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string  s="";
-    print_string(s);
-    print_string(s+"0");
-    print_string(s+"1");
+    // input format
+    // first line contain two integer n and reqd_sum
+    // second line contains n seperated integers
+    // output format print yes if it is possible to form sum=reqd_sum using subset of array a
+    int n,reqd_sum;
+    cin>>n>>reqd_sum;
+    vector <int> a(n+1,0);
+    vector <vector <int> > dp(reqd_sum+1,vector <int> (reqd_sum+1,0));
+    loop(0,n)cin>>a[i];
+
+    // dp[i][j] represent is it possible to achieve sum=j by adding some or all elements of a[] till i
+
+    // we know that dp[i][0] for all i is true
+    for(int i=0;i<n;i++){
+        dp[i][0]=1;
+    }
+    // we also know that dp[0][j] for all j is false
+    for(int j=0;j<reqd_sum;j++){
+        dp[0][j]=0;
+    }
+
+
+    // fillin the dp grid
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=reqd_sum;j++){
+            // case 1 if new element is greater than required sum
+            if(j<a[i-1]){
+                dp[i][j]=dp[i-1][j];
+            }
+            // case 2 if new elements is less than or equal to required sum
+            if(j>=a[i-1]){
+                dp[i][j]=dp[i-1][j]+dp[i-1][j-a[i-1]];
+            } 
+        }
+    }
+
+
+    // the answer is present in dp[n-1][reqd_sum]
+    if(dp[n][reqd_sum])cout<<"YES";
+    else cout<<"No"<<nextline;
+
 return 0;
 }

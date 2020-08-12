@@ -1,6 +1,7 @@
-// dp subset sum problem
-// recursion solution
-// expenonetial complexity
+// standard dp
+// print n digit binary strin without consecutive 1's
+// recursion
+// 2^n complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -90,22 +91,30 @@ const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
-vector <int> a;
+
 int n;
-bool is_sub_sum(int ind, int reqd_ssum){
-    if(reqd_ssum==0)return true;
-    if(reqd_ssum<0)return false;
-    if(ind==n-1)return false;
-    return(is_sub_sum(ind+1,reqd_ssum-a[ind]) || is_sub_sum(ind+1,reqd_ssum));
-}
 
-
-void solve(){
-    int reqd_sum;
-    cin>>n>>reqd_sum;
-    a.resize(n);
-    loop(0,n)cin>>a[i];
-    cout<<is_sub_sum(0,reqd_sum);
+void recur(string a){
+    int curr_length=a.length();
+    //base case string length is 0
+    if(curr_length==0){
+        recur("0");
+        recur("1");
+    }
+    // base case string length is equal to n
+    if(curr_length==n){
+        cout<<a<<nextline;
+        return;
+    }
+    // recur case if last index is 0 call function for both string+0 and string+1
+    if(a.back()=='0'){
+        recur(a+'0');
+        recur(a+'1');
+    }
+    if(a.back()=='1'){
+        recur(a+'0');
+    }
+    return;
 }
 
 int main()
@@ -116,8 +125,10 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
-    }
+    // input format
+    // single integer n that is the length of binary string
+    cin>>n;
+    recur("");
+
 return 0;
 }

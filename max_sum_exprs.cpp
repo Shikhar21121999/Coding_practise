@@ -1,4 +1,6 @@
-// empty
+// standard dp
+// maximize the value of an expression
+// link:https://www.techiedelight.com/maximize-value-of-the-expression/
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,16 +88,9 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
-void print_string(string a){
-	if(a.back()=='1')cout<<"possible"<<nextline;
-	cout<<a.length()<<nextline;
-	cout<<a<<nextline;
-}
-
-
-// does an element get added to the map if we try to acess
 int main()
 {
 ios::sync_with_stdio(0);
@@ -104,9 +99,36 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string  s="";
-    print_string(s);
-    print_string(s+"0");
-    print_string(s+"1");
+    // Input format:
+    // first line contains a single integer n size of the array
+    // second line contains n seperated integers
+    // output:
+    // max value of the expression a[s]-a[r]+a[q]-a[p] provided p<q<r<s
+    // as sum of the expression can be zero or negative we intialize all to -IINf
+    int n;
+    cin>>n;
+    vector <int> a(n+1),first(n+1,-IINF),second(n+1,-IINF),third(n+1,-IINF),fourth(n+1,-IINF);
+    loop(0,n)cin>>a[i];
+
+    //first stores the max value for a[s]
+    for(int i=n-1;i>=0;i--){
+        first[i]=max(first[i+1],a[i]);
+    }
+    // second stores the max value for a[s]-a[r]
+    for(int i=n-2;i>=0;i--){
+        second[i]=max(second[i+1],first[i+1]-a[i]);
+    }
+    // third stores the max value for a[s]-a[r]+a[q]
+    for(int i=n-3;i>=0;i--){
+        third[i]=max(third[i+1],second[i+1]+a[i]);
+    }
+    // fourth stores the max value for a[s]-a[r]+a[q]-a[p]
+    for(int i=n-4;i>=0;i--){
+        fourth[i]=max(fourth[i+1],third[i+1]-a[i]);
+    }
+
+    cout<<fourth[0]<<nextline;
+
+
 return 0;
 }

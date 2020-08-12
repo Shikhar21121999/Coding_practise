@@ -1,4 +1,7 @@
-// empty
+// minimum sum partition problem
+// standard dp using bitmask
+// psuedo polynomial complexity
+
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -67,11 +70,12 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
+# define loopj(r,n) for(int j=r;j<n;j++)
+# define loopm(s,m) for(int k=s;k<m;k++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
 # define space " "
-//vector<vector<int> > vec( n , vector<int> (m, 0));
 //YES
 //NO
 //cout
@@ -82,20 +86,11 @@
  
 const ll mod9=1e9+7;
 const ll maxsize=2e9+1;
-// const ll mod =998244353;
+const ll mod =998244353;
 const ll mod2=1073741824;
-const ll INF=1e18L+5;
-const int two_pow_fiv=200008;
+ 
 using namespace std;
-
-void print_string(string a){
-	if(a.back()=='1')cout<<"possible"<<nextline;
-	cout<<a.length()<<nextline;
-	cout<<a<<nextline;
-}
-
-
-// does an element get added to the map if we try to acess
+ 
 int main()
 {
 ios::sync_with_stdio(0);
@@ -104,9 +99,42 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string  s="";
-    print_string(s);
-    print_string(s+"0");
-    print_string(s+"1");
+    /*
+    here we first take the input array
+    then we use bitmasking technique to select the number for a temp set
+    we sum them all up to find the sum of these numbers to get temp_sum
+    we calculate temp abs diff by subtracting 2*temp_sum from overall or total sum
+    we minimize this value overall to get the required ans
+    */
+	int n;
+	cin >> n;
+	vll a(n);
+	ll sum=0;
+	loop(1,n+1){
+		cin>>a[i];
+		sum+=a[i];
+	}
+	ll temp_sum=0;
+	//aplly bit mask to check wether it exists
+	//msking loop
+	bool flag=false;
+	ll ans=1e10;
+	// 1<<n represent the number formed by raising 2 to the power n 
+	for (int mask = 1; mask < (1<<n) ; mask++)
+	{
+		//it generates number which is inturn a possible selection of numbers in vector
+		temp_sum=0;
+		for (int i = 1; i <= n; i++)
+		{
+			// this loop checks which bits are activated in the current number
+			// this in turn helps us decide the number to be taken in set
+			// we take the number corsponding to whose index bit is active in the mask number
+			if(mask & (1<<i))temp_sum+=a[i];
+		}
+		// find the min of abs diff of two sets
+		ans=min(ans,abs(sum-2*temp_sum));
+		
+	}
+	cout<<ans;
 return 0;
 }

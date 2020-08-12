@@ -1,4 +1,6 @@
-// empty
+// dp subset sum problem
+// recursion solution
+// expenonetial complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,16 +88,27 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
-
-void print_string(string a){
-	if(a.back()=='1')cout<<"possible"<<nextline;
-	cout<<a.length()<<nextline;
-	cout<<a<<nextline;
+vector <int> a;
+int n;
+bool is_sub_sum(int ind, int reqd_ssum){
+    cout<<ind<<space<<reqd_ssum<<nextline;
+    if(reqd_ssum==0)return true;
+    if(reqd_ssum<0)return false;
+    if(ind==n-1)return false;
+    return (is_sub_sum(ind+1,reqd_ssum-a[ind]) || is_sub_sum(ind+1,reqd_ssum));
 }
 
 
-// does an element get added to the map if we try to acess
+void solve(){
+    int reqd_sum;
+    cin>>n>>reqd_sum;
+    a.resize(n);
+    loop(0,n)cin>>a[i];
+    cout<<is_sub_sum(0,reqd_sum);
+}
+
 int main()
 {
 ios::sync_with_stdio(0);
@@ -104,9 +117,8 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string  s="";
-    print_string(s);
-    print_string(s+"0");
-    print_string(s+"1");
+    test{
+        solve();
+    }
 return 0;
 }
