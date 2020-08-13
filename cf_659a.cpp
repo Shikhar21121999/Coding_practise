@@ -1,4 +1,5 @@
-// empty
+// codeforces 659 A
+// time complexity O(n)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,7 +87,29 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
+
+
+void solve(){
+    int n;
+    cin>>n;
+    vi a(n);
+    loop(0,n)cin>>a[i];
+    string prev_str="abcdefghijklmnopqrstuvwxyabcdefghijklmopqrstuvwxyabcdefgh";
+    cout<<prev_str<<nextline;
+    for(int i=0;i<n;i++){
+        // curr length of charcter is a[i]
+        // and a[i+1] character different
+        string new_str=prev_str;
+        // just put character at a[i]th index different from prev_str
+        new_str[a[i]]=prev_str[a[i]]+1;
+        prev_str=new_str;
+        cout<<new_str<<nextline;
+    }
+}
+
+
 
 int main()
 {
@@ -96,9 +119,9 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string a="absdcusdcdsfa";
-    string b=a;
-    b[5]=a[5]+1;
-    cout<<b<<nextline;
+    test{
+        solve();
+    }
+
 return 0;
 }

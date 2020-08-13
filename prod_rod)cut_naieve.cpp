@@ -1,4 +1,7 @@
-// empty
+// standard dp
+// max_product rod cutting
+// naieve solution
+// exponential time complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,7 +89,30 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
+
+int k;
+void max_self(int& a,int b){
+    a=max(a,b);
+}
+
+
+int recur(int n){
+    cout<<n<<nextline;
+    // base case
+    if(n==1)return 1;
+    int max_val=1;
+    for(int i=1;i<n;i++){
+        // max_self(max_val,i*recur(n-i));
+        max_val=max(i*recur(n-i),i*n-i);
+        cout<<"."<<i<<space<<recur(n-i)<<nextline;
+        cout<<"'"<<i<<space<<n-i<<nextline;
+        cout<<":"<<max_val<<nextline;
+    }
+    cout<<"max_value is:"<<max_val<<nextline;
+    return max_val;
+}
 
 int main()
 {
@@ -96,9 +122,10 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    string a="absdcusdcdsfa";
-    string b=a;
-    b[5]=a[5]+1;
-    cout<<b<<nextline;
+    // input format
+    // single integer n that is the length of binary string
+    cin>>k;
+    cout<<recur(k);
+
 return 0;
 }
