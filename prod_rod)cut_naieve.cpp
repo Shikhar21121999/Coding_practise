@@ -93,24 +93,24 @@ const int IINF=1e8+5;
 using namespace std;
 
 int k;
-void max_self(int& a,int b){
-    a=max(a,b);
+
+int max(int a,int b,int c){
+    return max(a,max(b,c));
 }
 
+void max_self(int& a,int b,int c){
+    a=max(a,b,c);
+}
 
+vi dp;
 int recur(int n){
-    cout<<n<<nextline;
     // base case
-    if(n==1)return 1;
-    int max_val=1;
+    if(n==1 || n==0)return 1;
+    int max_val=0;
     for(int i=1;i<n;i++){
         // max_self(max_val,i*recur(n-i));
-        max_val=max(i*recur(n-i),i*n-i);
-        cout<<"."<<i<<space<<recur(n-i)<<nextline;
-        cout<<"'"<<i<<space<<n-i<<nextline;
-        cout<<":"<<max_val<<nextline;
+        max_self(max_val,i*recur(n-i),i*(n-i));
     }
-    cout<<"max_value is:"<<max_val<<nextline;
     return max_val;
 }
 
@@ -125,6 +125,7 @@ cin.tie(0);
     // input format
     // single integer n that is the length of binary string
     cin>>k;
+    dp.resize(k+2,-1);
     cout<<recur(k);
 
 return 0;

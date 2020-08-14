@@ -1,5 +1,6 @@
-// codeforces 659 A
-// time complexity O(n)
+// standard dp
+// max_product rod cutting
+// trick solution
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -91,26 +92,6 @@ const int IINF=1e8+5;
 using namespace std;
 
 
-void solve(){
-    int n;
-    cin>>n;
-    vi a(n);
-    loop(0,n)cin>>a[i];
-    string prev_str(100,'a');
-    cout<<prev_str<<nextline;
-    for(int i=0;i<n;i++){
-        // curr length of charcter is a[i]
-        // and a[i+1] character different
-        // just put character at a[i]th index different from prev_str
-        if(prev_str[a[i]]=='a')prev_str[a[i]]='b';
-        else prev_str[a[i]]='a';
-        cout<<prev_str<<nextline;
-        
-    }
-}
-
-
-
 int main()
 {
 ios::sync_with_stdio(0);
@@ -119,9 +100,23 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
-    }
+    // input format
+    // single integer n that is the length of binary string
+    int n;
+    cin>>n;
+
+    // partition as much as possible as parts of three
+    // base cases
+    if(n==2)cout<<1;
+    if(n==3)cout<<2;
+
+    // now if number is multiple of 3 or not
+    int parts=n/3;
+    int remainder=n%3;
+    int ans=pow(3,parts);
+    // cout<<remainder<<nextline;
+    if(remainder)cout<<ans*remainder;
+    else cout<<ans<<nextline;
 
 return 0;
 }

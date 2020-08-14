@@ -1,5 +1,7 @@
-// codeforces 659 A
-// time complexity O(n)
+// standard dp
+// max_product rod cutting
+// dp solution
+// exponential time complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -90,26 +92,27 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
+int k;
 
-void solve(){
-    int n;
-    cin>>n;
-    vi a(n);
-    loop(0,n)cin>>a[i];
-    string prev_str(100,'a');
-    cout<<prev_str<<nextline;
-    for(int i=0;i<n;i++){
-        // curr length of charcter is a[i]
-        // and a[i+1] character different
-        // just put character at a[i]th index different from prev_str
-        if(prev_str[a[i]]=='a')prev_str[a[i]]='b';
-        else prev_str[a[i]]='a';
-        cout<<prev_str<<nextline;
-        
-    }
+int max(int a,int b,int c){
+    return max(a,max(b,c));
 }
 
+void max_self(int& a,int b,int c){
+    a=max(a,b,c);
+}
 
+vi dp;
+int recur(int n){
+    // base case already calculated 
+    if(dp[n]!=-1)return dp[n];
+    int max_val=0;
+    for(int i=1;i<n;i++){
+        // max_self(max_val,i*recur(n-i));
+        max_self(dp[n],i*recur(n-i),i*(n-i));
+    }
+    return dp[n];
+}
 
 int main()
 {
@@ -119,9 +122,12 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    test{
-        solve();
-    }
+    // input format
+    // single integer n that is the length of binary string
+    cin>>k;
+    dp.resize(k+2,-1);
+    dp[0]=dp[1]=0;
+    cout<<recur(k);
 
 return 0;
 }
