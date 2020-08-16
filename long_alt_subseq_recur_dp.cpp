@@ -1,4 +1,7 @@
-// empty
+// standard dp
+// longest alternating subsequence
+// naieve recursion
+// exponential complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -86,13 +89,43 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
+const int IINF=1e8+5;
 using namespace std;
 
+int n,cnt=0;
 vector <int> a;
+vector <vector <int> > dp;
 
-void print(int b[]){
-	cout<<b[0]<<nextline;
+void max_self(int& a,int b){
+    a=max(a,b);
 }
+
+
+
+int recur(int st,int flag){
+
+    // base case already calculated
+    if(dp[st][flag]!=-1)return dp[st][flag];
+
+    // this works both as base case when start==n
+    // we get 0
+    int res=0;
+
+    for(int i=st;i<n;i++){
+        cnt++;
+        if(flag and a[i]>a[i-1]){
+            max_self(res,recur(i+1,!flag)+1);
+        }
+        else if(!flag and a[i]<a[i-1]){
+            max_self(res,recur(i+1,!flag)+1);
+        }
+        else{
+            max_self(res,recur(i+1,flag));
+        }
+    }
+    return dp[st][flag]=res;
+}
+
 
 
 int main()
@@ -103,14 +136,19 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    int n,strt=0;
+    // input format
+    // first line contains a single integer n the length of the array
+    // next line contains n integers seperated by space
     cin>>n;
-    cout<<n<<nextline;
-    int arr[n+1];
+    a.resize(n+1,0);
+    dp.resize(n+1,vector <int> (2,-1) );
     loop(0,n){
-    	cin>>arr[i];
+        cin>>a[i];
+        // cout<<a[i]<<space;
     }
-    loop(0,n)cout<<arr[i]<<space;
-    print(arr);
+
+    cout<<max(recur(1,1)+1,recur(1,0)+1)<<nextline;
+    cout<<cnt<<nextline;
+
 return 0;
 }
