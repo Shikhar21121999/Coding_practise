@@ -1,6 +1,6 @@
 // standard dp
-// wildcard pattern matching
-// o(n*m) complexity that is psuedo polynomial
+// sum of all elements in a sub-matrix in constant time
+// link : https://www.techiedelight.com/calculate-sum-elements-sub-matrix-constant-time/
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -92,29 +92,6 @@ const int IINF=1e8+5;
 using namespace std;
 
 
-string inp,pat_str;
-int n,m;
-
-vector < vector <int> > dp;
-int recur(int i,int j){
-    // base case illegal coordinates
-    if(i<0 or j<0 )return 0;
-    // base case already done 
-    if(dp[i][j]!=-2)return dp[i][j];
-    // recurrent states
-    // we check if allowed path coordinates
-    if(pat_str[j-1]=='*'){
-        return dp[i][j]=recur(i-1,j-1)+recur(i-1,j)+recur(i,j-1);
-    }
-    if(pat_str[j-1]=='?'){
-        return dp[i][j]=recur(i-1,j-1);
-    }
-    if(inp[i-1]==pat_str[j-1]){
-        return dp[i][j]=recur(i-1,j-1);
-    }
-    return dp[i][j]=0;
-    
-}
 
 int main()
 {
@@ -125,30 +102,39 @@ cin.tie(0);
     freopen("output.txt","w",stdout);
 #endif
     // input format
-    // first line contains a string that is the input text
-    // second line contains a string that is the pattern string
-    cin>>inp>>pat_str;
-    n=inp.length();
-    m=pat_str.length();
-    dp.resize(n+2,vector <int> (m+2,-2));
-
-    // we check if first 0,0 is a allowed state or not
-    if(inp[0]==pat_str[0] or pat_str[0]=='?' or pat_str[0]=='*'){
-        // we put dp[0][0]=1
-        dp[0][0]=1;
-        // we call the function and check if dp[n-1][m-1] is >=0
-        if(recur(n,m))cout<<"Yes"<<nextline;
-        else cout<<"No"<<nextline; 
+    // first line contains two integers n,m that is the size of the overall matrix
+    // next n line contains m elements each seperated by space
+    // last line contains 4 space seperated integers p,q,r,s
+    // which represent top left and bottom right coordinates of the sub-matrix
+    int n,m;
+    cin>>n>>m;
+    vector <vector <int> > a(n+1,vector <int> (m+1,0));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cin>>a[i][j];
+        }
     }
-    else cout<<"No"<<nextline;
-    loop(0,10)cout<<i<<space;
-    cout<<nextline; 
-    for(auto rows:dp){
-        for(auto values:rows){
-            cout<<values<<tab;
+    // we create sum matrix such that sum[i][j] represent sum of submatrix from 0,0 till i,j
+    vector <vector <int> > sum_mat(n+1,vector <int> (m+1,0));
+    for(int i=1;i<n;i++){
+        for(int j=0;j<m;j++){
+            sum_mat[i][j]=sum_mat[i-1][j]+a[i][j];
+        }
+    }
+    for(int i=0;i<n;i++){
+        for(int j=1;j<m;j++){
+            sum_mat[i][j]=sum_mat[i][j-1]+sum_mat[i][j];
+        }
+    }
+    for(auto rows:sum_mat){
+        for(auto value:rows){
+            cout<<value<<tab;
         }
         cout<<nextline;
     }
+    int p,q,r,s;
+    cin>>p>>q>>r>>s;
+    cout<<sum_mat[r][s]-sum_mat[r][q-1]+sum_mat[p-1][q-1]-sum_mat[p-1][s];
 
 return 0;
 }

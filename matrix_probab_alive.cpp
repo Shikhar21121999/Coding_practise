@@ -1,6 +1,5 @@
 // standard dp
-// wildcard pattern matching
-// o(n*m) complexity that is psuedo polynomial
+// matrix probability of man alive
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -91,28 +90,15 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
-
-string inp,pat_str;
-int n,m;
-
-vector < vector <int> > dp;
-int recur(int i,int j){
-    // base case illegal coordinates
-    if(i<0 or j<0 )return 0;
-    // base case already done 
-    if(dp[i][j]!=-2)return dp[i][j];
-    // recurrent states
-    // we check if allowed path coordinates
-    if(pat_str[j-1]=='*'){
-        return dp[i][j]=recur(i-1,j-1)+recur(i-1,j)+recur(i,j-1);
-    }
-    if(pat_str[j-1]=='?'){
-        return dp[i][j]=recur(i-1,j-1);
-    }
-    if(inp[i-1]==pat_str[j-1]){
-        return dp[i][j]=recur(i-1,j-1);
-    }
-    return dp[i][j]=0;
+int n,st_i,st_j,steps;
+float recur(int i,int j,int step_lef){
+    // illegal state first
+    if(i<0 or i>=n or j<0 or j>=n)return 0.0;
+    // cout<<a[i][j]<<nextline;
+    // base case only 1 step left
+    if(step_lef==0)return 1.0;
+    // recurrent case 
+    return (0.25*recur(i+1,j,step_lef-1)+0.25*recur(i,j+1,step_lef-1)+0.25*recur(i-1,j,step_lef-1)+0.25*recur(i,j-1,step_lef-1));
     
 }
 
@@ -125,30 +111,11 @@ cin.tie(0);
     freopen("output.txt","w",stdout);
 #endif
     // input format
-    // first line contains a string that is the input text
-    // second line contains a string that is the pattern string
-    cin>>inp>>pat_str;
-    n=inp.length();
-    m=pat_str.length();
-    dp.resize(n+2,vector <int> (m+2,-2));
-
-    // we check if first 0,0 is a allowed state or not
-    if(inp[0]==pat_str[0] or pat_str[0]=='?' or pat_str[0]=='*'){
-        // we put dp[0][0]=1
-        dp[0][0]=1;
-        // we call the function and check if dp[n-1][m-1] is >=0
-        if(recur(n,m))cout<<"Yes"<<nextline;
-        else cout<<"No"<<nextline; 
-    }
-    else cout<<"No"<<nextline;
-    loop(0,10)cout<<i<<space;
-    cout<<nextline; 
-    for(auto rows:dp){
-        for(auto values:rows){
-            cout<<values<<tab;
-        }
-        cout<<nextline;
-    }
+    // first line contains a single integer order of the matrix
+    // second line contains two integer i,j the initial co-ordinates of man
+    // third line contains the number of steps to take
+    cin>>n>>st_i>>st_j>>steps;
+    cout<<recur(st_i,st_j,steps);
 
 return 0;
 }
