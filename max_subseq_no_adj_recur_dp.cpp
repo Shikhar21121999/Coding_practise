@@ -1,6 +1,7 @@
 // standard dp
-// sum of all elements in a sub-matrix in constant time
-// link : https://www.techiedelight.com/calculate-sum-elements-sub-matrix-constant-time/
+// maximum sum of subsequence with no adjacent elements
+// dp solution
+// time complexity o(n*total_sum)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -88,10 +89,23 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
+int n;
+vector <int> a;
+vector <vector <int > > dp;
 
+int recur(int i,int max_sum){
+    // base case
+    if(i>=n)return max_sum;
+
+    // already calculated
+    if(dp[i][max_sum]!=-1)return dp[i][max_sum];
+
+    // recurrent case
+    // include the current index , exclude current index
+    return dp[i][max_sum] = max(recur(i+2,max_sum+a[i]),recur(i+1,max_sum));
+}
 
 int main()
 {
@@ -101,40 +115,14 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    // input format
-    // first line contains two integers n,m that is the size of the overall matrix
-    // next n line contains m elements each seperated by space
-    // last line contains 4 space seperated integers p,q,r,s
-    // which represent top left and bottom right coordinates of the sub-matrix
-    int n,m;
-    cin>>n>>m;
-    vector <vector <int> > a(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            cin>>a[i][j];
-        }
+    cin>>n;
+    a.resize(n+1);
+    int temp_sum;
+    loop(0,n){
+        cin>>a[i];
+        temp_sum+=a[i];
     }
-    // we create sum matrix such that sum[i][j] represent sum of submatrix from 0,0 till i,j
-    vector <vector <int> > sum_mat(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i-1][j]+a[i][j];
-        }
-    }
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i][j-1]+sum_mat[i][j];
-        }
-    }
-    for(auto rows:sum_mat){
-        for(auto value:rows){
-            cout<<value<<tab;
-        }
-        cout<<nextline;
-    }
-    int p,q,r,s;
-    cin>>p>>q>>r>>s;
-    cout<<sum_mat[r+1][s+1]-sum_mat[r+1][q]+sum_mat[p][q]-sum_mat[p][s+1];
-
+    dp.resize(n+1,vector <int> (temp_sum+1,-1));
+    cout<<recur(0,0);
 return 0;
 }

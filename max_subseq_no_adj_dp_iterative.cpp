@@ -1,6 +1,7 @@
 // standard dp
-// sum of all elements in a sub-matrix in constant time
-// link : https://www.techiedelight.com/calculate-sum-elements-sub-matrix-constant-time/
+// maximum sum of subsequence with no adjacent elements
+// dp solution iterative
+// time complexity o(n*n)
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -88,10 +89,14 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
+int n;
+vector <int> a,dp;
 
+void max_self(int& a,int b){
+    a=max(a,b);
+}
 
 int main()
 {
@@ -101,40 +106,26 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    // input format
-    // first line contains two integers n,m that is the size of the overall matrix
-    // next n line contains m elements each seperated by space
-    // last line contains 4 space seperated integers p,q,r,s
-    // which represent top left and bottom right coordinates of the sub-matrix
-    int n,m;
-    cin>>n>>m;
-    vector <vector <int> > a(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            cin>>a[i][j];
+    cin>>n;
+    a.resize(n+1);
+    dp.resize(n+1,-1);
+    int temp_sum;
+    loop(0,n){
+        cin>>a[i];
+    }
+    // dp[i] represent max_sum subseq posiible if we include a[i] in the subseeq
+    dp[0]=a[0];
+    dp[1]=a[1];
+    for(int i=2;i<n;i++){
+        for(int j=0;j<i-1;j++){
+            max_self(dp[i],dp[j]+a[i]);
         }
     }
-    // we create sum matrix such that sum[i][j] represent sum of submatrix from 0,0 till i,j
-    vector <vector <int> > sum_mat(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i-1][j]+a[i][j];
-        }
+    // now we find the max in the dp which is our ans
+    int ans=0;
+    for(auto val:dp){
+        max_self(ans,val);
     }
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i][j-1]+sum_mat[i][j];
-        }
-    }
-    for(auto rows:sum_mat){
-        for(auto value:rows){
-            cout<<value<<tab;
-        }
-        cout<<nextline;
-    }
-    int p,q,r,s;
-    cin>>p>>q>>r>>s;
-    cout<<sum_mat[r+1][s+1]-sum_mat[r+1][q]+sum_mat[p][q]-sum_mat[p][s+1];
-
+    cout<<ans;
 return 0;
 }

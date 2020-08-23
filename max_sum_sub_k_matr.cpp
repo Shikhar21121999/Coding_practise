@@ -1,6 +1,8 @@
 // standard dp
-// sum of all elements in a sub-matrix in constant time
-// link : https://www.techiedelight.com/calculate-sum-elements-sub-matrix-constant-time/
+// max sum of kxk sub-matrix in a mxn matrix
+// link : https://www.techiedelight.com/find-maximum-sum-submatrix-in-given-matrix/
+// iterative dp (more of implementation) based
+// o(m*n) time complexity
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -91,7 +93,9 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
-
+void max_self(int& a,int b){
+    a=max(a,b);
+}
 
 int main()
 {
@@ -104,8 +108,7 @@ cin.tie(0);
     // input format
     // first line contains two integers n,m that is the size of the overall matrix
     // next n line contains m elements each seperated by space
-    // last line contains 4 space seperated integers p,q,r,s
-    // which represent top left and bottom right coordinates of the sub-matrix
+    // last line contains a single integer k the dimension of sub-matrix
     int n,m;
     cin>>n>>m;
     vector <vector <int> > a(n+2,vector <int> (m+2,0));
@@ -132,9 +135,17 @@ cin.tie(0);
         }
         cout<<nextline;
     }
-    int p,q,r,s;
-    cin>>p>>q>>r>>s;
-    cout<<sum_mat[r+1][s+1]-sum_mat[r+1][q]+sum_mat[p][q]-sum_mat[p][s+1];
+    int k,ans=0;
+    cin>>k;
+    // now we need to run a loop in sum-matrix and find greatest of k*k sub-matrix
+    for(int i=1;i<=n+1-k;i++){
+        for(int j=1;j<=m+1-k;j++){
+            int r=i+k-1;
+            int s=j+k-1;
+            max_self(ans,sum_mat[r][s]-sum_mat[r][j-1]+sum_mat[i-1][j-1]-sum_mat[i-1][s]);
+        }
+    }
+    cout<<ans<<nextline;
 
 return 0;
 }

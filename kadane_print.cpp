@@ -1,6 +1,4 @@
-// standard dp
-// sum of all elements in a sub-matrix in constant time
-// link : https://www.techiedelight.com/calculate-sum-elements-sub-matrix-constant-time/
+// Kadane template
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -69,6 +67,8 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
+# define loopj(r,n) for(int j=r;j<n;j++)
+# define loopm(s,m) for(int k=s;k<m;k++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
@@ -87,12 +87,29 @@ const ll maxsize=2e9+1;
 // const ll mod =998244353;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
-const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
 
+ll maxSubArraySum(vi a) 
+{
+    int size=a.size(); 
+    ll max_so_far = INT_MIN, max_ending_here = 0; 
+  
+    for (int i = 0; i < size; i++) 
+    { 
+        max_ending_here = max_ending_here + a[i]; 
+        if (max_so_far < max_ending_here) 
+            max_so_far = max_ending_here; 
+  
+        if (max_ending_here < 0) 
+            max_ending_here = 0; 
+    } 
+    return max_so_far; 
+} 
 
+ 
+ 
 int main()
 {
 ios::sync_with_stdio(0);
@@ -101,40 +118,36 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    // input format
-    // first line contains two integers n,m that is the size of the overall matrix
-    // next n line contains m elements each seperated by space
-    // last line contains 4 space seperated integers p,q,r,s
-    // which represent top left and bottom right coordinates of the sub-matrix
-    int n,m;
-    cin>>n>>m;
-    vector <vector <int> > a(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            cin>>a[i][j];
+    // Input format
+    // first line contains a single integer n the size of the array
+    // second line contains n space seperated integers the elements of the array
+
+    // Output 
+    // print the largest sum contigious subarray
+    int n;
+    cin>>n;
+    vector <int> a(n+1);
+    loop(0,n)cin>>a[i];
+    int overall_sum=-IINF,curr_sum=0;
+    int lfirs=0,lsec=0,ofirs=0,osec=0;
+    loop(0,n){
+        curr_sum+=a[i];
+        lsec++;
+        if(curr_sum>overall_sum){
+            overall_sum=curr_sum;
+            ofirs=lfirs;
+            osec=lsec;
+        }
+        else if(curr_sum<0){
+            curr_sum=0;
+            lfirs=i+1;
+            lsec=i+1;
         }
     }
-    // we create sum matrix such that sum[i][j] represent sum of submatrix from 0,0 till i,j
-    vector <vector <int> > sum_mat(n+2,vector <int> (m+2,0));
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i-1][j]+a[i][j];
-        }
-    }
-    for(int i=1;i<=n;i++){
-        for(int j=1;j<=m;j++){
-            sum_mat[i][j]=sum_mat[i][j-1]+sum_mat[i][j];
-        }
-    }
-    for(auto rows:sum_mat){
-        for(auto value:rows){
-            cout<<value<<tab;
-        }
-        cout<<nextline;
-    }
-    int p,q,r,s;
-    cin>>p>>q>>r>>s;
-    cout<<sum_mat[r+1][s+1]-sum_mat[r+1][q]+sum_mat[p][q]-sum_mat[p][s+1];
+    cout<<"over all sum is : "<<overall_sum<<nextline;
+    cout<<"subarray is : ";
+    loop(ofirs,osec)cout<<a[i]<<space;
+
 
 return 0;
 }
