@@ -1,2 +1,6 @@
-over all sum is : 6
-subarray is : 4 -1 2 1 
+1	5
+2	5
+3	7
+4	9
+5	0
+6	8
