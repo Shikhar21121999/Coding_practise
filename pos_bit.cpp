@@ -1,4 +1,5 @@
-// test 1
+// find the position of the only active bit
+
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +91,15 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+int pos_bit(int a){
+	int cnt=0;
+	while(a){
+		cnt++;
+		a>>=1;
+	}
+	return cnt;
+}
+
 
 int main()
 {
@@ -99,9 +109,14 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	// input format
+	// a single line contains a single integer n 
+	// n has only 1 active bit
+	// find the position of the active bit
+	int n;
+	cin>>n;
+	cout<<"position of the active bit is : "<<pos_bit(n)<<nextline;
+
+	// power to which 2 was raised to get n
+	cout<<"power to which 2 was raised to get n is : "<<pos_bit(n)-1<<nextline;
 }

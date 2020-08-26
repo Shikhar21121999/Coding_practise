@@ -1,4 +1,5 @@
-// test 1
+// finding the single occureing number provided all the rest number occur thrice
+
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +91,15 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+int pos_bit(int a){
+	int cnt=0;
+	while(a){
+		cnt++;
+		a>>=1;
+	}
+	return cnt;
+}
+
 
 int main()
 {
@@ -99,9 +109,33 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	// input format
+	// a single line contains a single integer n number of elements in the array
+	// next line contains n space seperated integers that is the elements of the array
+	int n;
+	cin>>n;
+	vi a(n+1);
+	loop(0,n)cin>>a[i];
+
+	int ans=0;
+	// we see all the bits of the number and sum them
+	for(int i=0;i<32;i++){
+		// loops for the ith bit
+		int sum=0;
+		// counts the number of elements of the array in which ith bit is active
+		int comp_num=1<<i;
+
+		for(int j=0;j<n;j++){
+			// loops for the elements of the array
+			if(a[j] & comp_num){
+				// is true if ith bit is active
+				sum++;
+			}
+		}
+		// sum % 3 will either be 0 (denoting the number that is different has this bit as inactive)
+		// or 1 denoting that ith bit is active in the number
+		if(sum%3)ans|=comp_num;
+	}
+	cout<<ans<<nextline;
+	
 }

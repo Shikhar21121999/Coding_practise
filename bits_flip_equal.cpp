@@ -1,4 +1,4 @@
-// test 1
+// count number of bits to be flipped to convert a to b
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +90,49 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+int cbits (int a){
+	// counting bits using looping and left shifting
+	// we keep shifting bits in a to right and compare it with 1
+	// whenever this condition satisfies we counted a bit
+	int cnt=0;
+	while(a){
+		cnt+=a&1;
+		a>>=1;
+	}
+	return cnt;
+
+	// another variation of this can be where we shift 1 to right and apply
+	// & operation whenever answer is positive
+}
+
+int cbitsv (int a){
+	// counting set bits using brian kerninghans algo
+	// we iteratively find the number that has only rightmost set bit
+	// we keep subtracting the numbber
+	int cnt=0;
+	while(a & ~(a-1)){
+		cnt++;
+		a-=a & ~(a-1);
+	}
+	return cnt;
+}
+
+int cbitsv2 (int a){
+	// counting set bits using brian kerninghans algo
+	// we iteratively find the number that has only rightmost set bit
+	// we keep subtracting the numbber
+	int cnt=0;
+	while(a){
+		cnt++;
+		a&=(a-1);
+		// a & (a-1) results in a numbers in which all the bits 
+		// after and including current rightmost bits become unset
+	}
+	return cnt;
+}
+
+
+
 
 int main()
 {
@@ -99,9 +142,18 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	// input format
+	// first line contains two numbers a and b
+	// count number of bits to be flipped to convert a to b
+	int a,b,res;
+	cin>>a>>b;
+	res=a^b;
+	// now res has bits equal to the number of bits to be flipped
+	// count number of bits in res
+	cout<<cbitsv(res)<<nextline;
+	cout<<cbits(res)<<nextline;
+	cout<<cbitsv2(res)<<nextline;
+
+	// or simply using popcount
+	cout<<__builtin_popcount(res)<<nextline;
 }

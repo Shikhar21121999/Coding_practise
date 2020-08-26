@@ -1,4 +1,4 @@
-// test 1
+// check if kth bit is active in a number n
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -99,9 +99,13 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	// Input format
+	// first line contains an integer n
+	// second line contains an integer k
+	// check if kth bit is active in n
+	int n,k;
+	cin>>n>>k;
+	// left shift 1 to k and compare the two number
+	if(n & 1<<k)cout<<"Yes";
+	else cout<<"NO"<<nextline;
 }

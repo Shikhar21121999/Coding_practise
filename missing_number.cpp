@@ -1,4 +1,5 @@
-// test 1
+// missing number
+// in an array prints the number that occurs odd number of times
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -99,9 +100,15 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	int n,res=0;
+	cin>>n;
+	vi a(n+1);
+	loop(1,n+1){
+		cin>>a[i];
+		a[i]^=i;
+		res^=a[i];
+	}
+	cout<<res<<nextline;
+
+    
 }

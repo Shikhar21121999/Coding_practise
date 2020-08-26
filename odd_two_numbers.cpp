@@ -1,4 +1,6 @@
-// test 1
+// two-num odd occurences
+// two number with odd occurences in an un-sorted array
+
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -99,9 +101,32 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	int a=4;
-	int b=1;
-	a>>=1;
-	a=a | b;
-	cout<<a;
+	// input format
+	// first line contains a number n that is the number of elements
+	// next line contains n space seperated numbers
+	// find two numbers that occur only once given rest number occur twice
+	int n,res=0;
+	cin>>n;
+	vi a(n+1);
+	loop(1,n+1){
+		cin>>a[i];
+		res^=a[i];
+	}
+	// now res equals the xor of two single occuring number that is x and y
+	// finding the number that has only rightmost single set bit in res
+	int rset=res & ~(res-1);
+	// now we divide the array into two set one that have rightmost bit as set
+	// the other in which it doesnt
+	// one number belongs to the first the other to the second
+	int x=0,y=0;
+	for(int i=1;i<=n;i++){
+		if(a[i]&rset){
+			x^=a[i];
+			continue;
+		}
+		y^=a[i];
+	}
+	cout<<x<<space<<y<<nextline;
+
+    
 }
