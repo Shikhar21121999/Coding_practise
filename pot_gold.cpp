@@ -1,4 +1,6 @@
-// test 1
+// standard dp
+// pots of gold game
+// naieve recursion
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +92,22 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+vi a;
+
+int recur(int f_i,int s_i, bool turn){
+	// base case
+	if(f_i==s_i){
+		if(turn)return a[f_i];
+		return 0;
+	}
+
+	// recurrent case
+	if(turn){
+		return max(recur(f_i+1,s_i,!turn)+a[f_i],recur(f_i,s_i-1,!turn)+a[s_i]);
+	}
+	if(a[f_i]>=a[s_i])return recur(f_i+1,s_i,!turn);
+	return recur(f_i,s_i-1,!turn);
+}
 
 int main()
 {
@@ -99,12 +117,12 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	string a="passdfdg";
-	std::string * mystring= new std::string(a.substr(0,5));
-	cout<<*mystring<<nextline;
-	// try freeing up the memory
-	delete mystring;
-	// gives error as we are trying to acess memory that does no longer exist	
-	cout<<*mystring<<nextline;
-	// gives error as we are trying to acess memory that does no longer exist
+	// input format
+	// first line contains a single integer n, number of pots
+	// next line contains n space seperated integers that is the number of coin in ith pot
+	int n;
+	cin>>n;
+	a.resize(n+1,0);
+	loop(0,n)cin>>a[i];
+	cout<<recur(0,n-1,true);
 }

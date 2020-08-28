@@ -1,4 +1,4 @@
-// test 1
+// floyd-warshall naieve inplementation
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -88,8 +88,12 @@ const ll mod =998244353;
 const ll mod2=1073741824;
 
 const ll INF=1e18L+5;
+const int IINF=1e8+5;
 using namespace std;
 
+void min_self(int& a,int b){
+	a=min(a,b);
+}
 
 int main()
 {
@@ -99,12 +103,53 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	string a="passdfdg";
-	std::string * mystring= new std::string(a.substr(0,5));
-	cout<<*mystring<<nextline;
-	// try freeing up the memory
-	delete mystring;
-	// gives error as we are trying to acess memory that does no longer exist	
-	cout<<*mystring<<nextline;
-	// gives error as we are trying to acess memory that does no longer exist
+	// Input format
+	// first line contains two integers n and m that is number of nodes and number of edges
+	// next m line contains 3 space seperated integers a,b,c which represent there is an edge between a and b of wieght c
+	int n,m;
+	cin>>n>>m;
+	vector <vector <int> > adj_mat(n+1,vi(n+1,0));
+	
+	loop(0,m){
+		int n1,n2,wt;
+		cin>>n1>>n2>>wt;
+		adj_mat[n1][n2]=wt;
+		adj_mat[n2][n1]=wt;
+	}
+
+	/*for(auto row:adj_mat){
+		for(auto val:row){
+			cout<<val<<tab<<space;
+		}
+		cout<<nextline;
+	}*/
+
+	vector <vector <int> > sd(n+1,vi(n+1,IINF));
+	// assigning shortest path for all nodes to themselves as 0
+	loop(1,n+1){
+		for(int j=1;j<=n;j++){
+			sd[i][i]=0;
+			if(adj_mat[i][j])sd[i][j]=adj_mat[i][j];
+		}
+		
+	}
+
+	for(int i=1;i<=n;i++){
+		// beginning node
+		for(int j=1;j<=n;j++){
+			// ending node
+			for(int k=1;k<=n;k++){
+				// intermediate node
+				min_self(sd[i][j],sd[i][k]+sd[k][j]);
+			}
+		}
+	}
+
+	// printing the shortest distance node
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cout<<sd[i][j]<<space;
+		}
+		cout<<nextline;
+	}
 }

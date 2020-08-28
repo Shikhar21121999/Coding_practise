@@ -1,4 +1,5 @@
-// test 1
+// standard dp
+// max length snake sequence
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +91,27 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+int n,m;
+vvi a;
+
+void max_self(int& a,int b){
+	a=max(a,b);
+}
+
+int recur(int i,int j){
+	// base case illegal coordinates
+	if(i>=n or j>=m)return 0;
+	// recurrent cases
+	int p=0,q=0;
+	// checking if right is allowed
+	if(a[i][j+1]==a[i][j]+1 or a[i][j+1]==a[i][j]-1){
+		p=recur(i,j+1)+1;
+	}
+	if(a[i+1][j]==a[i][j]+1 or a[i+1][j]==a[i][j]-1){
+		q=recur(i+1,j)+1;
+	}
+	return max(p,q);
+}
 
 int main()
 {
@@ -99,12 +121,27 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	string a="passdfdg";
-	std::string * mystring= new std::string(a.substr(0,5));
-	cout<<*mystring<<nextline;
-	// try freeing up the memory
-	delete mystring;
-	// gives error as we are trying to acess memory that does no longer exist	
-	cout<<*mystring<<nextline;
-	// gives error as we are trying to acess memory that does no longer exist
+	// Input format 
+	// first line contains two integers n and m
+	// that is the dimension of input array
+	// next n line contain m space seperated integers
+	cin>>n>>m;
+	a.resize(n+1,vi(m+1,0));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j];
+		}
+	}
+	int ans=0;
+	int temp_ans=0;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			temp_ans=recur(i,j);
+			cout<<i<<space<<j<<space<<temp_ans<<nextline;
+			max_self(ans,temp_ans);
+		}
+	}
+	cout<<ans;
+
+	
 }

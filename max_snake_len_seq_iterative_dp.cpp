@@ -1,4 +1,6 @@
-// test 1
+// standard dp
+// max length snake sequence
+// iterative dp
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -90,6 +92,16 @@ const ll mod2=1073741824;
 const ll INF=1e18L+5;
 using namespace std;
 
+int n,m;
+vvi a,dp;
+
+void max_self(int& a,int b){
+	a=max(a,b);
+}
+
+bool cnd(int a,int b){
+	return abs(a-b)==1;
+}
 
 int main()
 {
@@ -99,12 +111,30 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	string a="passdfdg";
-	std::string * mystring= new std::string(a.substr(0,5));
-	cout<<*mystring<<nextline;
-	// try freeing up the memory
-	delete mystring;
-	// gives error as we are trying to acess memory that does no longer exist	
-	cout<<*mystring<<nextline;
-	// gives error as we are trying to acess memory that does no longer exist
+	// Input format 
+	// first line contains two integers n and m
+	// that is the dimension of input array
+	// next n line contain m space seperated integers
+	cin>>n>>m;
+	a.resize(n+1,vi(m+1,0));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j];
+		}
+	}
+	dp.resize(n+1,vi(m+1,-1));
+
+	int ans=0;
+	for(int i=n-1;i>=0;i--){
+		for(int j=m-1;j>=0;j--){
+			int p=0,q=0;
+			if(cnd(a[i+1][j],a[i][j]))p=dp[i+1][j]+1;
+			if(cnd(a[i][j+1],a[i][j]))q=dp[i][j+1]+1;
+			dp[i][j]=max(p,q);
+			max_self(ans,dp[i][j]);
+		}
+	}
+	cout<<ans;
+
+	
 }

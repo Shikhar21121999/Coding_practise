@@ -1,4 +1,5 @@
-// test 1
+// standard dp
+// minimum cuts for pallindromic partition
 #include <bits/stdc++.h>
 #include<iostream>
  
@@ -88,7 +89,41 @@ const ll mod =998244353;
 const ll mod2=1073741824;
 
 const ll INF=1e18L+5;
+const int IINF=1e8+5;
 using namespace std;
+
+string s;
+int n;
+int cnt=0;
+int recur(int st_ind,int curr_ind){
+	cout<<st_ind<<space<<curr_ind<<nextline;
+	cnt++;
+	// base case 
+	if(st_ind==n+1 or curr_ind>n)return 95;
+	// recurrent case
+
+	// if we get a pallindrome substring
+	bool cndn;
+	{
+		string curr_strin=s.substr(st_ind,curr_ind-st_ind);
+		string rev_curr_str=curr_strin;
+		reverse(curr_strin.begin(), curr_strin.end());
+		cndn=rev_curr_str==curr_strin;
+		cout<<rev_curr_str<<nextline;
+	}
+	// delete &curr_strin;
+	// delete &rev_curr_str;
+	if(cndn){
+		cout<<"string is pallindrome"<<nextline;
+		if(curr_ind==n and st_ind==0)return 0;
+		cout<<"first choice : "<<curr_ind<<space<<curr_ind+1<<nextline;
+		cout<<"second choice : "<<st_ind<<space<<curr_ind+1<<nextline;
+		return min(recur(st_ind,curr_ind+1),recur(curr_ind,curr_ind+1)+1);
+	}
+	cout<<"string is not pallindrome"<<nextline;
+	cout<<"only choice is : "<<st_ind<<space<<curr_ind+1<<nextline;
+	return recur(st_ind,curr_ind+1);
+}
 
 
 int main()
@@ -99,12 +134,11 @@ cin.tie(0);
 	freopen("input.txt","r",stdin);
 	freopen("output.txt","w",stdout);
 #endif
-	string a="passdfdg";
-	std::string * mystring= new std::string(a.substr(0,5));
-	cout<<*mystring<<nextline;
-	// try freeing up the memory
-	delete mystring;
-	// gives error as we are trying to acess memory that does no longer exist	
-	cout<<*mystring<<nextline;
-	// gives error as we are trying to acess memory that does no longer exist
+	// input format
+	// first line contains a single string to be split into pallindromic substring
+	cin>>s;
+	n=s.length();
+	cout<<s<<nextline;
+	cout<<n<<nextline;
+	cout<<recur(0,1)<<nextline;	
 }
