@@ -1,4 +1,4 @@
-// standard dp 0-1 knapsack problem
+// codeforces 660A
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -67,6 +67,7 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
+# define loop2(q,n) for(int j=q;j<n;j++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
@@ -86,11 +87,24 @@ const ll maxsize=2e9+1;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
-void max_self(ll& a,ll b){
-    a=max(a,b);
+void solve(){
+    int n;
+    cin>>n;
+    if(n-30>0 and n-30!=6 and n-30!=10 and n-30!=14){
+        cout<<"YES"<<nextline;
+        cout<<6<<space<<10<<space<<14<<space<<n-30<<nextline;
+        return;
+    }
+    else if (n-31>0){
+        cout<<"YES"<<nextline;
+        cout<<15<<space<<10<<space<<6<<space<<n-31<<nextline;
+        return;
+    }
+    cout<<"NO"<<nextline;
+    
+
 }
 
 
@@ -102,25 +116,8 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    int n,w;
-    cin>>n>>w;
-    vector <ll> dp(w+1,0);
-    // dp[i] denotes the max_value that can be acquired for wieght i
-    ll wt,value;
-    loop(0,n){
-        cin>>wt>>value;
-        // this wieght and value can be used to update value of max wieght of W-wt
-        // as we are not allowed to have multiple items of same type hence we iterate backwards in wieght
-        // in short if we keep forward iteration dp[0] ->dp[3] ->dp[6] hence for wt 3 dp[6]=dp[3+3],dp[3]+value_3
-        // hence it leads to taking multiple items of same type
-        for(int wt_already=w-wt;wt_already>=0;wt_already--){
-            max_self(dp[wt_already+wt],dp[wt_already]+value);
-        }
+    test{
+        solve();
     }
-    ll ans=0;
-    loop(0,w+1){
-        max_self(ans,dp[i]);
-    }
-    cout<<ans<<nextline;
 return 0;
 }

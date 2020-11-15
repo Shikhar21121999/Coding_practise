@@ -93,15 +93,8 @@ using namespace std;
 unordered_map<string,int> dict;
 vector <vector <int>> dp;
 
-int main()
-{
-ios::sync_with_stdio(0);
-cin.tie(0);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
-#endif
-    // input format
+void solve(){
+        // input format
     // first line is an integer n denoting the number of strings in dictionary
     // next n lines are strings to be present in the dictionary
     // last line contains string s : the string to see if it can be broken into words that are present in dictionary
@@ -120,7 +113,7 @@ cin.tie(0);
     n=s.length();
     if(n==0){
         cout<<"Yes"<<nextline;
-        return 0;
+        return;
     }
     dp.resize(n+1,vector<int> (n+1,-2));
     // dp[i][j] represent wether the substring from i to j (both inclusive) 
@@ -164,8 +157,18 @@ cin.tie(0);
     if(dp[0][n-1])cout<<"Yes"<<nextline;
     else cout<<"No"<<nextline;
 
+}
 
-
-
+int main()
+{
+ios::sync_with_stdio(0);
+cin.tie(0);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+#endif
+    test{
+        solve();
+    }
 return 0;
 }

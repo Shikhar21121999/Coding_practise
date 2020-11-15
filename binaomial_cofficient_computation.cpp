@@ -1,4 +1,4 @@
-// standard dp 0-1 knapsack problem
+// binomial cofficient computation wiithout dp
 #include <bits/stdc++.h>
  
 # define C continue;
@@ -89,9 +89,14 @@ const int two_pow_fiv=200008;
 const int IINF=1e8+5;
 using namespace std;
 
-void max_self(ll& a,ll b){
-    a=max(a,b);
+
+ll recur(ll n,ll r){
+    // base case
+    if(n==r or r==0)return 1;
+    // recur case
+    return recur(n-1,r-1)+recur(n-1,r);
 }
+
 
 
 int main()
@@ -102,25 +107,12 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    int n,w;
-    cin>>n>>w;
-    vector <ll> dp(w+1,0);
-    // dp[i] denotes the max_value that can be acquired for wieght i
-    ll wt,value;
-    loop(0,n){
-        cin>>wt>>value;
-        // this wieght and value can be used to update value of max wieght of W-wt
-        // as we are not allowed to have multiple items of same type hence we iterate backwards in wieght
-        // in short if we keep forward iteration dp[0] ->dp[3] ->dp[6] hence for wt 3 dp[6]=dp[3+3],dp[3]+value_3
-        // hence it leads to taking multiple items of same type
-        for(int wt_already=w-wt;wt_already>=0;wt_already--){
-            max_self(dp[wt_already+wt],dp[wt_already]+value);
-        }
-    }
-    ll ans=0;
-    loop(0,w+1){
-        max_self(ans,dp[i]);
-    }
-    cout<<ans<<nextline;
+    // input format
+    // input two integers n,r
+    // output format
+    // value of ncr
+    ll n,r;
+    cin>>n>>r;
+    cout<<recur(n,r)<<nextline;
 return 0;
 }

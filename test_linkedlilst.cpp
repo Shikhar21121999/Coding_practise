@@ -1,7 +1,6 @@
-// standard dp 0-1 knapsack problem
+
 #include <bits/stdc++.h>
- 
-# define C continue;
+# define C continue
 # define R return
  
 # define D double
@@ -67,10 +66,12 @@
 # define revsorta sort(a.begin(), a.end(), greater <int>());
 # define revsortb sort(b.begin(), b.end(), greater <>());
 # define loop(q,n) for(int i=q;i<n;i++)
+# define loop2(q,n) for(int j=q;j<n;j++)
 # define test int t;cin >> t;while(t--)
 # define nextline "\n"
 # define tab "\t"
 # define space " "
+# define get_arr_size_n int n;cin>>n;int arr[n];loop(0,n)cin>>arr[i];
 //vector<vector<int> > vec( n , vector<int> (m, 0));
 //YES
 //NO
@@ -85,14 +86,72 @@ const ll maxsize=2e9+1;
 // const ll mod =998244353;
 const ll mod2=1073741824;
 const ll INF=1e18L+5;
+const int IINF=1e9+5;
 const int two_pow_fiv=200008;
-const int IINF=1e8+5;
 using namespace std;
 
-void max_self(ll& a,ll b){
-    a=max(a,b);
+vector <int> ans;
+
+class Node{
+    public:
+    int data ;
+    Node* next;
+}*first=NULL,*last=NULL,*second=NULL,*Lulz=NULL,*hello=NULL;
+
+void create(int a[],int n)
+{
+    for(int i=1;i<n;i++)
+    {
+        Node*t=new Node();
+        t->data=a[i];
+        t->next=NULL;
+        last->next=t;
+        last=t;
+    }
+    //last->next=first; //for loop or circular linked list 
 }
 
+void display(Node *p) //display LL
+{
+    while(p!=NULL)
+    {
+        cout<<p->data<<' ';
+        p=p->next;
+    }
+}
+//vector<int> v;
+
+void insertend(int x)
+{
+    Node *c=new Node();
+    c->data=x;
+    c->next=NULL;
+    Lulz->next=c;
+    Lulz=c;
+}
+
+void intersectionoftwoLL(Node *p,Node *q)
+{
+    Node *z =new Node();
+    z->data=0;
+    z->next=NULL;
+    Lulz=z;
+    hello=z;
+    while(q!=NULL and p!=NULL)
+    {
+        if(p->data==q->data)
+        {
+            insertend(q->data);
+            p=p->next;
+            q=q->next;
+        }
+        else if(p->data < q->data)
+        {
+            p=p->next;
+        } 
+        else q=q->next;
+    }
+}
 
 int main()
 {
@@ -102,25 +161,29 @@ cin.tie(0);
     freopen("input.txt","r",stdin);
     freopen("output.txt","w",stdout);
 #endif
-    int n,w;
-    cin>>n>>w;
-    vector <ll> dp(w+1,0);
-    // dp[i] denotes the max_value that can be acquired for wieght i
-    ll wt,value;
-    loop(0,n){
-        cin>>wt>>value;
-        // this wieght and value can be used to update value of max wieght of W-wt
-        // as we are not allowed to have multiple items of same type hence we iterate backwards in wieght
-        // in short if we keep forward iteration dp[0] ->dp[3] ->dp[6] hence for wt 3 dp[6]=dp[3+3],dp[3]+value_3
-        // hence it leads to taking multiple items of same type
-        for(int wt_already=w-wt;wt_already>=0;wt_already--){
-            max_self(dp[wt_already+wt],dp[wt_already]+value);
-        }
-    }
-    ll ans=0;
-    loop(0,w+1){
-        max_self(ans,dp[i]);
-    }
-    cout<<ans<<nextline;
-return 0;
-}
+  int n,m;
+  cin>>n>>m;
+  int A[n],B[m];
+  for(int i=0;i<n;i++) cin>>A[i];
+  first=new Node();
+    first->data=A[0];
+    first->next=NULL;
+    last=first;
+  create(A,n);
+  
+  for(int i=0;i<m;i++) cin>>B[i];
+   second=new Node();
+    second->data=B[0];
+    second->next=NULL;
+    last=second;
+  create(B,m);
+  Node *third =new Node();
+
+
+  intersectionoftwoLL(first,second);
+  display(hello);
+} 
+  
+  
+  
+  
