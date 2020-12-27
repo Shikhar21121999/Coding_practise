@@ -95,17 +95,29 @@ using namespace std;
 
 void solve()
 {
-    int n, m;
+    long long n, m;
     cin >> n >> m;
 
-    vector<int> a(n);
-    vector<int> b(m);
+    vector<long long> a(n);
+    vector<long long> b(m);
 
-    loop(0, n) cin >> a[i];
+    cin >> a[0];
+    long long min_a = a[0];
+    loop(1, n)
+    {
+        cin >> a[i];
+        min_a = min(a[i], min_a);
+    }
 
-    loop(0, m) cin >> b[i];
+    long long cnt = 0;
+    loop(0, m)
+    {
+        cin >> b[i];
+        if (b[i] < min_a)
+            cnt++;
+    }
 
-    cout << 0 << nextline;
+    cout << cnt * n << nextline;
 }
 
 int main()
