@@ -1,4 +1,4 @@
-// template cp
+// cf705 a
 #include <bits/stdc++.h>
 
 # define ll long long
@@ -46,7 +46,6 @@
 //false
 //yes
 //no
-//cin
 
 // const ll mod9=1e9+7;
 // const ll maxsize=2e9+1;
@@ -57,8 +56,37 @@
 using namespace std;
 
 void solve(){
-	cout<<"solving";
+	int n,k;
+	cin>>n>>k;
 
+	vector<bool> inc(n+1,true);
+
+	int chosen=n;
+	inc[k]=false;
+	chosen--;
+	int diff;
+	
+
+	for(int i=k-1;i>0;i--){
+		// if current number is included
+		// we make sure that diff is not included
+		if(inc[i]){
+			diff=k-i;
+			if(diff!=i){
+				inc[diff]=false;
+				chosen--;
+			}
+		}
+	}
+	// print number of included elements
+	// and those elelments
+	cout<<chosen<<endl;
+	if(chosen>0){
+		for(int i=1;i<=n;i++){
+			if(inc[i])cout<<i<<" ";
+		}
+		cout<<endl;
+	}
 }
 
 int main(){

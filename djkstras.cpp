@@ -144,7 +144,7 @@ cin.tie(0);
 
 	while(!pq.empty()){
 		int nind=pq.top().first;
-		int cdis=pq.top().second;
+		// int cdis=pq.top().second;
 		pq.pop();
 		if(visited[nind])continue;
 		visited[nind]=1;
@@ -153,9 +153,9 @@ cin.tie(0);
 		for(auto x:adj[nind]){
 			// here x is a pair of node and edge length
 			int bnind=x.first;
-			if(visited[bnind])continue;
 			// we try to relax the length
 			min_self(sd[bnind],sd[nind]+x.second);
+			if(visited[bnind])continue;
 			pq.push(make_pair(bnind,sd[bnind]));
 
 		}

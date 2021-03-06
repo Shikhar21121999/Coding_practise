@@ -46,7 +46,6 @@
 //false
 //yes
 //no
-//cin
 
 // const ll mod9=1e9+7;
 // const ll maxsize=2e9+1;
@@ -58,7 +57,6 @@ using namespace std;
 
 void solve(){
 	cout<<"solving";
-
 }
 
 int main(){
