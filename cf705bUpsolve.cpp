@@ -1,6 +1,4 @@
-// cf705b.cpp for higher ranges
-// solve this when h<1000 and m<1000
-// time format is HHH:MMM
+// upsolving question CF705b
 #include <bits/stdc++.h>
 
 # define ll long long
@@ -66,11 +64,11 @@ bool check(int a,int b){
 	// where a is for hour and b is for min
 
 	// check if all digits are valid
-	if(arr[a%10]==-1 || arr[(a/10)%10]==-1 || arr[(a/10)/10]==-1 || arr[b%10]==-1 || arr[(b/10)%10]==-1 || arr[(b/10)/10]==-1  )return 0;
+	if(arr[a%10]==-1 || arr[a/10]==-1 || arr[b%10]==-1 || arr[b/10]==-1 )return 0;
 
 	// create new hr and min that are formed by reflection
-	int hr=arr[b%10]*100+arr[(b/10)%10]*10+arr[(b/10)/10];
-	int min=arr[a%10]*100+arr[(a/10)%10]*10+arr[(a/10)/10];
+	int hr=arr[b%10]*10+arr[b/10];
+	int min=arr[a%10]*10+arr[a/10];
 
 	// check if both lie in the range
 	if(hr<h && min<m)return 1;
@@ -87,8 +85,8 @@ void solve(){
 	cin>>t;
 
 	// convert time into hour and min respectively
-	int a=(t[0]-'0')*100+(t[1]-'0')*10+(t[2]-'0');
-	int b=(t[4]-'0')*100+(t[5]-'0')*10+(t[6]-'0');
+	int a=(t[0]-'0')*10+(t[1]-'0');
+	int b=(t[3]-'0')*10+(t[4]-'0');
 
 	// while loop to run the clock in the given ranges
 	while(!check(a,b)){
@@ -107,8 +105,8 @@ void solve(){
 	// given by a (hour) and b(min)
 
 	// print the answer in the required format
-	printf("%03d:",a );		// print two digits in case a has 1 digit prepend 0 followed by : at the end
-	printf("%03d\n",b );	// print two digits in case b has 1 digit prepend 0 then change line
+	printf("%02d:",a );		// print two digits in case a has 1 digit prepend 0 followed by : at the end
+	printf("%02d\n",b );	// print two digits in case b has 1 digit prepend 0 then change line
 
 
 }

@@ -62,7 +62,11 @@ void solve(){
 }
 
 int main(){
-	test{
-		solve();
-	}
+	string in;
+	cin>>in;
+	cout<<in[0]<<nextline;
+	cout<<in[0]+'5'<<endl;
+	cout<<int('1')<<endl;
+	cout<<int('5')<<endl;
+
 }
