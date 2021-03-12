@@ -55,21 +55,13 @@
 // const ll INF=1e18L+5;
 using namespace std;
 
-bool comp1(pii a,pii b){
-	return (abs(a.second)<abs(b.second));
-}
-
-bool comp2(pii a,pii b){
-	return (abs(a.first)<abs(b.first));
-}
-
 void solve(){
 	int n;
 	cin>>n;
 
-	vpii miner,dmine;
-	miner.reserve(n);
-	dmine.reserve(n);
+	// miner is on y axis hence it only has y cords
+	// simmilarly dmine is on x axis hence it only has x cords
+	vi miner(n),dmine(n);
 	int j=0,k=0;
 	int x_cord,y_cord;
 	for(int i=0;i<2*n;i++){
@@ -77,20 +69,26 @@ void solve(){
 
 		// if coords of miner
 		if(x_cord==0){
-			miner.push_back(make_pair(x_cord,y_cord));
+			miner[j++]=abs(y_cord);
 		}
 
 		// if coords of dmine
 		if(y_cord==0){
-			dmine.push_back(make_pair(x_cord,y_cord));
+			dmine[k++]=abs(x_cord);
 		}
 	}
 
 	// sort the points
-	sort(miner.begin(),miner.end(),comp1);
-	sort(dmine.begin(),dmine.end(),comp2);
+	sort(all(miner));
+	sort(all(dmine));
 
-	
+	// now we need to find the distance between respective points
+	double ans=0;
+	for(int i=0;i<n;i++){
+		ans+=sqrt(1.0*miner[i]*miner[i]+1.0*dmine[i]*dmine[i]);
+	}
+
+	printf("%0.15lf\n", ans);
 
 
 
