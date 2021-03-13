@@ -1,4 +1,4 @@
-// test cpp
+// template cp
 #include <bits/stdc++.h>
 
 # define ll long long
@@ -39,14 +39,13 @@
 # define nextline "\n"
 # define tab "\t"
 # define space " "
-//YES
+//YES push_back make_pair
 //NO
 //cout
 //true
 //false
 //yes
 //no
-//cin
 
 // const ll mod9=1e9+7;
 // const ll maxsize=2e9+1;
@@ -56,52 +55,57 @@
 // const ll INF=1e18L+5;
 using namespace std;
 
-ll gcdEuclid(ll a, ll b) {
-    if (b==0) return a;
-    return gcdEuclid(b, a%b);
+int time_spend(int a,int b){
+	int ans=(b-a)/2;
+	if((b-a)%2)ans++;
+	return ans;
 }
 
 void solve(){
-	cout<<"solving";
+	int n;
+	cin>>n;
 
+	vpii sched(n);
+	int a,b;
+	for(int i=0;i<n;i++){
+		cin>>a>>b;
+		sched[i]=make_pair(a,b);
+	}
+
+	// test input
+	vi tm(n);
+	for(int i=0;i<n;i++){
+		cin>>tm[i];
+	}
+
+	// starting time
+	int last_dep=0;
+	int delay=0;
+	for(int i=0;i<n;i++){
+		delay+=tm[i];
+		int new_arr=sched[i].first+delay;
+
+		// cout<<sched[i].first<<" "<<delay<<" "<<new_arr<<endl;
+		if(i==n-1){
+			cout<<new_arr<<endl;
+			return;
+		}
+
+		// train will depart from this station at
+		new_arr+=(time_spend(sched[i].first,sched[i].second));
+		int dep_time=max(new_arr,sched[i].second);
+
+		// update delay
+		delay=dep_time-sched[i].second;
+	}
+	// cout<<delay+sched[n-1].first<<endl;
 }
 
 int main(){
-	ll n,m,k;
-	cin>>n>>m>>k;
-
-	// input the colors of first chandelier
-	vi a(n);
-	vi b(n);
-	loop(0,n)cin>>a[i];
-	loop(0,n)cin>>b[i];
-
-	// get the size of cycle
-	ll cycle_size=(n*m)/gcdEuclid(n,m);
-
-	// create a cycle of this size
-	vi diff_day(cycle_size+5,-1);
-	
-	// to store the day on which ith different occurs
-	int diff_cnt=0;
-	
-	loop(int i=1;i<=cycle_size;i++){
-		// we check if the colors are different on this day
-		int x=((i−1)%n)+1;
-		int y=((i−1)%m)+1;
-
-		// get the color on the days
-		if(a[x]!=b[y]){
-			diff_cnt++;
-			diff_day[diff_cnt]=i;
-		}
+	ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+	test{
+		solve();
 	}
-
-	// calculating answer
-	ll full_cycle=k/cycle_size;
-	ll extra_day=k%cycle_size;
-
-	cout<<full_cycle*cycle_size+diff_day[extra_day]<<endl;
-
-	return 0;
 }

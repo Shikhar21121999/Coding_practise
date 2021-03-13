@@ -1,4 +1,4 @@
-// test cpp
+// template cp
 #include <bits/stdc++.h>
 
 # define ll long long
@@ -39,14 +39,13 @@
 # define nextline "\n"
 # define tab "\t"
 # define space " "
-//YES
+//YES push_back make_pair
 //NO
 //cout
 //true
 //false
 //yes
 //no
-//cin
 
 // const ll mod9=1e9+7;
 // const ll maxsize=2e9+1;
@@ -61,23 +60,24 @@ ll gcdEuclid(ll a, ll b) {
     return gcdEuclid(b, a%b);
 }
 
-void solve(){
-	cout<<"solving";
-
-}
-
 int main(){
 	ll n,m,k;
 	cin>>n>>m>>k;
 
 	// input the colors of first chandelier
 	vi a(n);
-	vi b(n);
+	vi b(m);
 	loop(0,n)cin>>a[i];
-	loop(0,n)cin>>b[i];
+	loop(0,m)cin>>b[i];
+
+	loop(0,n)cout<<a[i]<<" ";
+	cout<<endl;
+	loop(0,m)cout<<b[i]<<" ";
+	cout<<endl;
 
 	// get the size of cycle
 	ll cycle_size=(n*m)/gcdEuclid(n,m);
+	cout<<cycle_size<<endl;
 
 	// create a cycle of this size
 	vi diff_day(cycle_size+5,-1);
@@ -85,23 +85,30 @@ int main(){
 	// to store the day on which ith different occurs
 	int diff_cnt=0;
 	
-	loop(int i=1;i<=cycle_size;i++){
+	for(int i=1;i<=cycle_size;i++){
 		// we check if the colors are different on this day
-		int x=((i−1)%n)+1;
-		int y=((i−1)%m)+1;
+		int x=((i-1)%n)+1;
+		int y=((i-1)%m)+1;
 
 		// get the color on the days
 		if(a[x]!=b[y]){
 			diff_cnt++;
-			diff_day[diff_cnt]=i;
+			diff_day[diff_cnt]=i+1;
 		}
+		cout<<x<<" "<<a[x]<<" "<<y<<" "<<b[y]<<" "<<diff_cnt<<" "<<diff_day[diff_cnt]<<endl;
+	}
+
+	// printing the cycle colors
+	for(int i=0;i<=cycle_size;i++){
+		cout<<i<<" "<<diff_day[i]<<endl;
 	}
 
 	// calculating answer
-	ll full_cycle=k/cycle_size;
-	ll extra_day=k%cycle_size;
+	int full_cycle=k/diff_cnt;
+	int extra_day=k%diff_cnt;
+	cout<<full_cycle<<" "<<cycle_size<<" "<<extra_day<<" "<<diff_day[extra_day]<<endl;
 
-	cout<<full_cycle*cycle_size+diff_day[extra_day]<<endl;
+	cout<<full_cycle*diff_cnt+diff_day[extra_day]<<endl;
 
 	return 0;
 }
